@@ -1,117 +1,162 @@
-// Mobile menu toggle
+/* ========== NAVBAR SCROLL ========== */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+/* ========== MOBILE MENU ========== */
 const hamburger = document.getElementById('hamburger');
-const navMenu = document.getElementById('navMenu');
+const navMenu   = document.getElementById('navMenu');
 
 if (hamburger && navMenu) {
   hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    navMenu.classList.toggle('open');
-    document.body.style.overflow = navMenu.classList.contains('open') ? 'hidden' : '';
+    const open = navMenu.classList.toggle('open');
+    hamburger.classList.toggle('active', open);
+    document.body.style.overflow = open ? 'hidden' : '';
   });
 
-  // Close menu when clicking a link
-  navMenu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      hamburger.classList.remove('active');
+  navMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
       navMenu.classList.remove('open');
+      hamburger.classList.remove('active');
       document.body.style.overflow = '';
     });
   });
 }
 
-// Navbar scroll effect
-const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  if (window.scrollY > 60) {
-    navbar.classList.add('scrolled');
-  } else {
-    navbar.classList.remove('scrolled');
+/* ========== ACCORDION (hair types) ========== */
+document.querySelectorAll('.accordion-trigger').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const body    = btn.nextElementSibling;
+    const isOpen  = btn.getAttribute('aria-expanded') === 'true';
+
+    // close all others
+    document.querySelectorAll('.accordion-trigger').forEach(b => {
+      b.setAttribute('aria-expanded', 'false');
+      b.nextElementSibling.classList.remove('open');
+    });
+
+    if (!isOpen) {
+      btn.setAttribute('aria-expanded', 'true');
+      body.classList.add('open');
+    }
+  });
+});
+
+/* ========== PRICE CALCULATOR ========== */
+const basePrices = {
+  wietnam: 42,
+  indie:   36,
+  chiny:   28,
+  iran:    38,
+  turcja:  44,
+  birma:   34,
+};
+
+const lengthMult = {
+  20: 1.00,
+  30: 1.20,
+  40: 1.42,
+  50: 1.68,
+  60: 2.00,
+  70: 2.40,
+};
+
+function calculatePrice() {
+  const hairType = document.getElementById('calc-type')?.value;
+  const length   = document.getElementById('calc-length')?.value;
+  const weight   = parseFloat(document.getElementById('calc-weight')?.value || 0);
+  const result   = document.getElementById('calc-result');
+
+  if (!hairType || !length || !weight || weight <= 0) {
+    if (result) result.classList.remove('show');
+    return;
   }
-}, { passive: true });
 
-// Scroll reveal animation
-const revealElements = document.querySelectorAll('.reveal');
+  const base = basePrices[hairType] || 35;
+  const mult = lengthMult[length]  || 1.0;
+  const loss = 0.15; // 15% processing loss
+  const pricePerKg   = base * mult;
+  const totalNet     = pricePerKg * weight;
+  const totalGross   = totalNet * 1.23; // VAT 23%
 
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      revealObserver.unobserve(entry.target);
-    }
-  });
-}, {
-  threshold: 0.12,
-  rootMargin: '0px 0px -40px 0px'
+  if (result) {
+    document.getElementById('calc-price-net').textContent =
+      totalNet.toFixed(2).replace('.', ',') + ' PLN';
+    document.getElementById('calc-price-gross').textContent =
+      '≈ ' + totalGross.toFixed(2).replace('.', ',') + ' PLN brutto';
+    document.getElementById('calc-loss').textContent =
+      'Uwaga: szacunkowy ubytek przy farbowaniu ~15% (ok. ' +
+      (weight * loss).toFixed(2).replace('.', ',') + ' kg)';
+    result.classList.add('show');
+  }
+}
+
+document.getElementById('calc-type')  ?.addEventListener('change', calculatePrice);
+document.getElementById('calc-length') ?.addEventListener('change', calculatePrice);
+document.getElementById('calc-weight') ?.addEventListener('input',  calculatePrice);
+
+document.getElementById('calc-btn')?.addEventListener('click', (e) => {
+  e.preventDefault();
+  calculatePrice();
 });
 
-revealElements.forEach(el => revealObserver.observe(el));
-
-// Smooth scroll for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
-    const target = document.querySelector(this.getAttribute('href'));
-    if (target) {
-      e.preventDefault();
-      const offset = 80;
-      const top = target.getBoundingClientRect().top + window.scrollY - offset;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }
-  });
-});
-
-// Contact form handling
-const contactForm = document.getElementById('contactForm');
-if (contactForm) {
-  contactForm.addEventListener('submit', function(e) {
+/* ========== CONTACT FORM ========== */
+const form = document.getElementById('contactForm');
+if (form) {
+  form.addEventListener('submit', e => {
     e.preventDefault();
-
-    const btn = this.querySelector('.form-submit');
-    const originalText = btn.innerHTML;
-
-    btn.innerHTML = 'Đang gửi...';
+    const btn  = form.querySelector('.form-submit');
+    const orig = btn.textContent;
+    btn.textContent = 'Wysyłanie...';
     btn.disabled = true;
 
-    // Simulate form submission (replace with actual endpoint)
     setTimeout(() => {
-      btn.innerHTML = '✓ Đã gửi thành công!';
+      btn.textContent = '✓ Wiadomość wysłana!';
       btn.style.background = '#22c55e';
-      this.reset();
-
+      form.reset();
       setTimeout(() => {
-        btn.innerHTML = originalText;
+        btn.textContent = orig;
         btn.style.background = '';
         btn.disabled = false;
       }, 4000);
-    }, 1500);
+    }, 1400);
   });
 }
 
-// Counter animation for stats
-const counters = document.querySelectorAll('.stat-number');
-let animated = false;
+/* ========== SCROLL REVEAL ========== */
+const revealEls = document.querySelectorAll('.reveal');
+const observer  = new IntersectionObserver(entries => {
+  entries.forEach(el => {
+    if (el.isIntersecting) {
+      el.target.classList.add('visible');
+      observer.unobserve(el.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
 
-const statsObserver = new IntersectionObserver((entries) => {
-  if (entries[0].isIntersecting && !animated) {
-    animated = true;
-    counters.forEach(counter => {
-      const target = counter.textContent;
-      const numMatch = target.match(/\d+/);
-      if (!numMatch) return;
+revealEls.forEach(el => observer.observe(el));
 
-      const num = parseInt(numMatch[0]);
-      const suffix = target.replace(/[\d]/g, '');
-      let start = 0;
-      const duration = 1500;
-      const step = num / (duration / 16);
-
-      const timer = setInterval(() => {
-        start = Math.min(start + step, num);
-        counter.textContent = Math.floor(start) + suffix;
-        if (start >= num) clearInterval(timer);
-      }, 16);
-    });
-  }
-}, { threshold: 0.5 });
-
-const statsSection = document.querySelector('.stats');
-if (statsSection) statsObserver.observe(statsSection);
+/* ========== COUNTER ANIMATION (stats bar) ========== */
+let counted = false;
+const statsBar = document.querySelector('.stats-bar');
+if (statsBar) {
+  new IntersectionObserver(([entry]) => {
+    if (entry.isIntersecting && !counted) {
+      counted = true;
+      document.querySelectorAll('.stat-bar-num').forEach(el => {
+        const full = el.textContent;
+        const num  = parseFloat(full);
+        if (isNaN(num)) return;
+        const suffix = full.replace(/[\d.,]/g, '');
+        let cur = 0;
+        const step = num / 60;
+        const id = setInterval(() => {
+          cur = Math.min(cur + step, num);
+          el.textContent = (Number.isInteger(num) ? Math.floor(cur) : cur.toFixed(1)) + suffix;
+          if (cur >= num) clearInterval(id);
+        }, 20);
+      });
+    }
+  }, { threshold: 0.5 }).observe(statsBar);
+}
