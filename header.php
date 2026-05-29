@@ -3,6 +3,7 @@
 <head>
   <meta charset="<?php bloginfo('charset'); ?>">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Hair Evolution Factory — Nowoczesna fabryka przemysłowego farbowania włosów naturalnych. Wrocław, Polska. Współpracujemy wyłącznie w modelu B2B.">
   <link rel="profile" href="https://gmpg.org/xfn/11">
   <?php wp_head(); ?>
 </head>
@@ -13,22 +14,19 @@
   <div class="container">
     <div class="nav-inner">
       <a href="<?php echo esc_url(home_url('/')); ?>" class="nav-logo">
-        <?php if (has_custom_logo()) : ?>
-          <?php the_custom_logo(); ?>
-        <?php else : ?>
-          <div class="nav-logo-icon">H</div>
-          <div class="nav-logo-text"><?php bloginfo('name'); ?></div>
-        <?php endif; ?>
+        <span class="nav-logo-text">Hair Evolution <em>Factory</em></span>
       </a>
 
       <ul class="nav-menu" id="navMenu">
-        <li><a href="#about">Giới thiệu</a></li>
-        <li><a href="#hair-types">Sản phẩm</a></li>
-        <li><a href="#why-us">Tại sao chọn chúng tôi</a></li>
-        <li><a href="#contact" class="nav-cta">Liên hệ ngay</a></li>
+        <li><a href="#about">O Fabryce</a></li>
+        <li><a href="#hair-types">Rodzaje Włosów</a></li>
+        <li><a href="#calculator">Kalkulator</a></li>
+        <li><a href="#why">Dlaczego My</a></li>
+        <li><a href="#contact">Kontakt</a></li>
+        <li><a href="#calculator" class="nav-cta">Oblicz cenę</a></li>
       </ul>
 
-      <button class="hamburger" id="hamburger" aria-label="Mở menu">
+      <button class="hamburger" id="hamburger" aria-label="Menu">
         <span></span>
         <span></span>
         <span></span>

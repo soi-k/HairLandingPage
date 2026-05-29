@@ -2,53 +2,46 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <a href="<?php echo esc_url(home_url('/')); ?>" class="nav-logo">
-            <div class="nav-logo-icon">H</div>
-            <div class="nav-logo-text"><?php bloginfo('name'); ?></div>
-          </a>
-          <p><?php bloginfo('description'); ?></p>
-          <div class="social-links">
-            <a href="#" class="social-link" aria-label="Facebook">f</a>
-            <a href="#" class="social-link" aria-label="Instagram">in</a>
-            <a href="#" class="social-link" aria-label="WhatsApp">w</a>
+          <div class="footer-brand-name">Hair Evolution <em>Factory</em></div>
+          <p>Nowoczesna fabryka przemysłowego farbowania włosów naturalnych. Wrocław, Polska. Wyłącznie model B2B.</p>
+        </div>
+        <div class="footer-col">
+          <h4>O Fabryce</h4>
+          <ul class="footer-links">
+            <li><a href="#about">O Fabryce</a></li>
+            <li><a href="#why">Dlaczego My</a></li>
+            <li><a href="#contact">Kontakt</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Rodzaje Włosów</h4>
+          <ul class="footer-links">
+            <li><a href="#hair-types">🇻🇳 Wietnam</a></li>
+            <li><a href="#hair-types">🇮🇳 Indie</a></li>
+            <li><a href="#hair-types">🇨🇳 Chiny</a></li>
+            <li><a href="#hair-types">🇮🇷 Iran</a></li>
+            <li><a href="#hair-types">🇹🇷 Turcja</a></li>
+            <li><a href="#hair-types">🇲🇲 Birma</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Kontakt</h4>
+          <div class="footer-contact-item">
+            <span>📍</span> Wrocław, Polska
+          </div>
+          <div class="footer-contact-item">
+            <span>✉️</span>
+            <a href="mailto:kontakt@hairevolutionfactory.pl">kontakt@hairevolutionfactory.pl</a>
+          </div>
+          <div class="footer-contact-item">
+            <span>📞</span>
+            <a href="tel:+48573568410">+48 573 568 410</a>
           </div>
         </div>
-
-        <div class="footer-col">
-          <h4>Điều hướng</h4>
-          <ul class="footer-links">
-            <li><a href="#about">Giới thiệu</a></li>
-            <li><a href="#hair-types">Sản phẩm</a></li>
-            <li><a href="#why-us">Tại sao chọn chúng tôi</a></li>
-            <li><a href="#contact">Liên hệ</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <h4>Sản phẩm</h4>
-          <ul class="footer-links">
-            <li><a href="#hair-types">Tóc Việt Nam</a></li>
-            <li><a href="#hair-types">Tóc Ấn Độ</a></li>
-            <li><a href="#hair-types">Tóc Trung Quốc</a></li>
-            <li><a href="#hair-types">Tóc Iran</a></li>
-            <li><a href="#hair-types">Tóc Thổ Nhĩ Kỳ</a></li>
-            <li><a href="#hair-types">Tóc Miến Điện</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <h4>Liên hệ</h4>
-          <ul class="footer-links">
-            <li><a href="mailto:<?php echo antispambot(get_option('admin_email')); ?>">📧 Email</a></li>
-            <li><a href="#">📞 Điện thoại</a></li>
-            <li><a href="#">📍 Địa chỉ</a></li>
-          </ul>
-        </div>
       </div>
-
       <div class="footer-bottom">
-        <p>© <?php echo date('Y'); ?> <?php bloginfo('name'); ?>. All rights reserved.</p>
-        <p>WordPress Theme</p>
+        <p>© <?php echo date('Y'); ?> Hair Evolution Factory. Wszelkie prawa zastrzeżone.</p>
+        <span class="footer-b2b-badge">B2B Only</span>
       </div>
     </div>
   </footer>
