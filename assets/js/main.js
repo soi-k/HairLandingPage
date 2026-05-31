@@ -24,23 +24,17 @@ if (hamburger && navMenu) {
   });
 }
 
-/* ========== ACCORDION (hair types) ========== */
-document.querySelectorAll('.accordion-trigger').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const body    = btn.nextElementSibling;
-    const isOpen  = btn.getAttribute('aria-expanded') === 'true';
+/* ========== HAIR TYPE SLIDERS ========== */
+document.querySelectorAll('.hair-box').forEach(box => {
+  const slider = box.querySelector('[data-slider]');
+  const prev   = box.querySelector('.slider-prev');
+  const next   = box.querySelector('.slider-next');
+  if (!slider || !prev || !next) return;
 
-    // close all others
-    document.querySelectorAll('.accordion-trigger').forEach(b => {
-      b.setAttribute('aria-expanded', 'false');
-      b.nextElementSibling.classList.remove('open');
-    });
+  const getScrollAmount = () => (slider.querySelector('.hair-slide')?.offsetWidth ?? 200) + 12;
 
-    if (!isOpen) {
-      btn.setAttribute('aria-expanded', 'true');
-      body.classList.add('open');
-    }
-  });
+  prev.addEventListener('click', () => slider.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' }));
+  next.addEventListener('click', () => slider.scrollBy({ left:  getScrollAmount(), behavior: 'smooth' }));
 });
 
 /* ========== PRICE CALCULATOR ========== */

@@ -63,12 +63,6 @@ function hair_customizer_register( $wp_customize ) {
     $images = [
         'hero_bg'    => ['Hero background image (dark photo)',  'https://hairevolution.pl/wp-content/uploads/2026/03/przedluzgym-20-of-215-scaled.jpg'],
         'about_img'  => ['About section photo',                 'https://hairevolution.pl/wp-content/uploads/2026/03/przedluzgym-20-of-215-scaled.jpg'],
-        'img_wietnam'=> ['Hair photo – Vietnam',                'https://hairevolution.pl/wp-content/uploads/2026/03/wietnam-768x1024.jpg'],
-        'img_indie'  => ['Hair photo – India',                  'https://hairevolution.pl/wp-content/uploads/2026/03/india-768x1024.jpg'],
-        'img_chiny'  => ['Hair photo – China',                  'https://hairevolution.pl/wp-content/uploads/2026/03/chiny-768x1024.jpg'],
-        'img_iran'   => ['Hair photo – Iran',                   'https://hairevolution.pl/wp-content/uploads/2026/03/iran-768x1024.jpg'],
-        'img_turcja' => ['Hair photo – Turkey',                 'https://hairevolution.pl/wp-content/uploads/2026/03/turcja-768x1024.jpg'],
-        'img_birma'  => ['Hair photo – Myanmar',                'https://hairevolution.pl/wp-content/uploads/2026/03/IMG_9895-768x1024.jpg'],
     ];
 
     foreach ( $images as $key => $data ) {
@@ -158,6 +152,62 @@ function hair_customizer_register( $wp_customize ) {
             'section' => 'hair_contact',
             'type'    => 'text',
         ]);
+    }
+
+    // ── SECTION: Hair Types ───────────────────
+    $wp_customize->add_section('hair_types', [
+        'title' => '💇 Hair Types',
+        'panel' => 'hair_panel',
+    ]);
+
+    $box_defaults = [
+        1 => ['Włosy Proste',  'Silky & Strong Straight', 'Naturalne włosy proste dostępne w kilku wariantach grubości włosiny. Idealne do farbowania i tworzenia gładkich, lśniących przedłużeń.'],
+        2 => ['Lekka Fala',    'Fine & Natural Wave',     'Delikatna, naturalna fala nadająca fryzurze objętości. Doskonała do technik ombre, balayage oraz lekkich stylizacji.'],
+        3 => ['Gęsta Fala',    'Dense Wave & Volume',     'Gęste, falowane pasma o bogatej strukturze. Popularne na rynkach europejskich i premium, idealne do objętościowych stylizacji.'],
+        4 => ['Włosy Kręcone', 'Power Curl & Afro',       'Naturalne loki o wyjątkowej wytrzymałości i gęstości. Przeznaczone dla klientów poszukujących mocnych, trwałych fryzerek.'],
+    ];
+
+    foreach ( $box_defaults as $n => $defaults ) {
+        $wp_customize->add_setting( "hair_box{$n}_title", [
+            'default'           => $defaults[0],
+            'sanitize_callback' => 'sanitize_text_field',
+        ]);
+        $wp_customize->add_control( "hair_box{$n}_title", [
+            'label'   => "Box {$n} – Title",
+            'section' => 'hair_types',
+            'type'    => 'text',
+        ]);
+
+        $wp_customize->add_setting( "hair_box{$n}_subtitle", [
+            'default'           => $defaults[1],
+            'sanitize_callback' => 'sanitize_text_field',
+        ]);
+        $wp_customize->add_control( "hair_box{$n}_subtitle", [
+            'label'   => "Box {$n} – Subtitle (gold italic)",
+            'section' => 'hair_types',
+            'type'    => 'text',
+        ]);
+
+        $wp_customize->add_setting( "hair_box{$n}_desc", [
+            'default'           => $defaults[2],
+            'sanitize_callback' => 'sanitize_textarea_field',
+        ]);
+        $wp_customize->add_control( "hair_box{$n}_desc", [
+            'label'   => "Box {$n} – Description",
+            'section' => 'hair_types',
+            'type'    => 'textarea',
+        ]);
+
+        for ( $i = 1; $i <= 5; $i++ ) {
+            $wp_customize->add_setting( "hair_box{$n}_img{$i}", [
+                'default'           => '',
+                'sanitize_callback' => 'esc_url_raw',
+            ]);
+            $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, "hair_box{$n}_img{$i}", [
+                'label'   => "Box {$n} – Image {$i}",
+                'section' => 'hair_types',
+            ]));
+        }
     }
 
     // ── SECTION: Footer ───────────────────────

@@ -70,168 +70,52 @@ $hero_bg = hair_mod('hero_bg', 'https://hairevolution.pl/wp-content/uploads/2026
     <div class="reveal" style="max-width:640px; margin-bottom:40px;">
       <span class="section-tag">Rodzaje Włosów</span>
       <h2 class="section-title">
-        Pochodzenie &amp; <span class="italic-gold">Charakterystyka</span>
+        Typy &amp; <span class="italic-gold">Charakterystyka</span>
       </h2>
-      <p class="section-desc">Oferujemy włosy naturalne z 6 regionów świata — każde o unikalnych właściwościach strukturalnych i aplikacyjnych.</p>
+      <p class="section-desc">Oferujemy włosy naturalne w 4 głównych typach struktury — każdy o unikalnych właściwościach i zastosowaniach.</p>
     </div>
 
-    <div class="accordion reveal reveal-d2">
+    <div class="hair-boxes">
 
-      <div class="accordion-item">
-        <button class="accordion-trigger" aria-expanded="true">
-          <span class="accordion-flag">🇻🇳</span>
-          <div class="accordion-label">
-            <h3>Wietnam — Silky Straight</h3>
-            <span class="hair-badge">Premium Styling Hair</span>
+      <?php
+      $boxes = [
+        1 => ['Włosy Proste',  'Silky & Strong Straight', 'Naturalne włosy proste dostępne w kilku wariantach grubości włosiny. Idealne do farbowania i tworzenia gładkich, lśniących przedłużeń.'],
+        2 => ['Lekka Fala',    'Fine & Natural Wave',     'Delikatna, naturalna fala nadająca fryzurze objętości. Doskonała do technik ombre, balayage oraz lekkich stylizacji.'],
+        3 => ['Gęsta Fala',    'Dense Wave & Volume',     'Gęste, falowane pasma o bogatej strukturze. Popularne na rynkach europejskich i premium, idealne do objętościowych stylizacji.'],
+        4 => ['Włosy Kręcone', 'Power Curl & Afro',       'Naturalne loki o wyjątkowej wytrzymałości i gęstości. Przeznaczone dla klientów poszukujących mocnych, trwałych fryzerek.'],
+      ];
+      foreach ($boxes as $n => $defaults) :
+        $title    = hair_mod("box{$n}_title",    $defaults[0]);
+        $subtitle = hair_mod("box{$n}_subtitle", $defaults[1]);
+        $desc     = hair_mod("box{$n}_desc",     $defaults[2]);
+      ?>
+      <div class="hair-box reveal">
+        <div class="hair-box-header">
+          <div>
+            <h3><?php echo esc_html($title); ?></h3>
+            <span class="hair-badge"><?php echo esc_html($subtitle); ?></span>
           </div>
-          <span class="accordion-arrow">▾</span>
-        </button>
-        <div class="accordion-body open">
-          <div class="accordion-desc">
-            <p>Włosy wietnamskie wyróżniają się niezwykłą jedwabistością i naturalnym połyskiem. Są idealne do farbowania premium, precyzyjnego dopasowania koloru oraz technik ombre i balayage.</p>
-            <div class="accordion-tags">
-              <span class="accordion-tag">Jedwabiste</span>
-              <span class="accordion-tag">Naturalny połysk</span>
-              <span class="accordion-tag">Cienka struktura</span>
-              <span class="accordion-tag">Ombre / Balayage</span>
+        </div>
+        <p class="hair-box-desc"><?php echo esc_html($desc); ?></p>
+        <div class="hair-slider-wrap">
+          <button class="slider-btn slider-prev" aria-label="Previous">&#8249;</button>
+          <div class="hair-slider" data-slider>
+            <?php for ($i = 1; $i <= 5; $i++) :
+              $img_url = hair_mod("box{$n}_img{$i}", '');
+            ?>
+            <div class="hair-slide">
+              <?php if ($img_url) : ?>
+                <img src="<?php echo esc_url($img_url); ?>" alt="<?php echo esc_attr($title); ?> – <?php echo $i; ?>">
+              <?php else : ?>
+                <div class="hair-slide-placeholder">Zdjęcie <?php echo $i; ?></div>
+              <?php endif; ?>
             </div>
+            <?php endfor; ?>
           </div>
-          <img class="accordion-img"
-            src="<?php echo esc_url(hair_mod('img_wietnam','https://hairevolution.pl/wp-content/uploads/2026/03/wietnam-768x1024.jpg')); ?>"
-            alt="Włosy wietnamskie"
-            onerror="this.outerHTML='<div class=\'accordion-img-placeholder\'>🇻🇳</div>'">
+          <button class="slider-btn slider-next" aria-label="Next">&#8250;</button>
         </div>
       </div>
-
-      <div class="accordion-item">
-        <button class="accordion-trigger" aria-expanded="false">
-          <span class="accordion-flag">🇮🇳</span>
-          <div class="accordion-label">
-            <h3>Indie — Fine Texture</h3>
-            <span class="hair-badge">Slavic-Type Look</span>
-          </div>
-          <span class="accordion-arrow">▾</span>
-        </button>
-        <div class="accordion-body">
-          <div class="accordion-desc">
-            <p>Włosy indyjskie są jednymi z najbardziej miękkich i lekkich dostępnych na rynku. Ich delikatna struktura sprawia, że doskonale imitują włosy europejskie (słowiańskie).</p>
-            <div class="accordion-tags">
-              <span class="accordion-tag">Najmiększe</span>
-              <span class="accordion-tag">Słowiański wygląd</span>
-              <span class="accordion-tag">Lekka struktura</span>
-              <span class="accordion-tag">Łatwe w stylizacji</span>
-            </div>
-          </div>
-          <img class="accordion-img"
-            src="<?php echo esc_url(hair_mod('img_indie','https://hairevolution.pl/wp-content/uploads/2026/03/india-768x1024.jpg')); ?>"
-            alt="Włosy indyjskie"
-            onerror="this.outerHTML='<div class=\'accordion-img-placeholder\'>🇮🇳</div>'">
-        </div>
-      </div>
-
-      <div class="accordion-item">
-        <button class="accordion-trigger" aria-expanded="false">
-          <span class="accordion-flag">🇨🇳</span>
-          <div class="accordion-label">
-            <h3>Chiny — Strong Straight</h3>
-            <span class="hair-badge">Smooth Finish</span>
-          </div>
-          <span class="accordion-arrow">▾</span>
-        </button>
-        <div class="accordion-body">
-          <div class="accordion-desc">
-            <p>Włosy chińskie są naturalnie proste i posiadają grubszą, bardziej zwartą włosinę. Cechują się bardzo wysoką wytrzymałością mechaniczną i doskonale trzymają kolor po farbowaniu.</p>
-            <div class="accordion-tags">
-              <span class="accordion-tag">Gruba struktura</span>
-              <span class="accordion-tag">Naturalnie proste</span>
-              <span class="accordion-tag">Bardzo wytrzymałe</span>
-              <span class="accordion-tag">Stabilny kolor</span>
-            </div>
-          </div>
-          <img class="accordion-img"
-            src="<?php echo esc_url(hair_mod('img_chiny','https://hairevolution.pl/wp-content/uploads/2026/03/chiny-768x1024.jpg')); ?>"
-            alt="Włosy chińskie"
-            onerror="this.outerHTML='<div class=\'accordion-img-placeholder\'>🇨🇳</div>'">
-        </div>
-      </div>
-
-      <div class="accordion-item">
-        <button class="accordion-trigger" aria-expanded="false">
-          <span class="accordion-flag">🇮🇷</span>
-          <div class="accordion-label">
-            <h3>Iran — Power Curl</h3>
-            <span class="hair-badge">Maximum Durability</span>
-          </div>
-          <span class="accordion-arrow">▾</span>
-        </button>
-        <div class="accordion-body">
-          <div class="accordion-desc">
-            <p>Włosy irańskie to jedne z najbardziej wytrzymałych włosów dostępnych na rynku. Cechuje je naturalna falistość lub kędzierzawość oraz bardzo wysoka gęstość.</p>
-            <div class="accordion-tags">
-              <span class="accordion-tag">Najwytrzymalsze</span>
-              <span class="accordion-tag">Naturalna kędzierzawość</span>
-              <span class="accordion-tag">Bardzo gęste</span>
-              <span class="accordion-tag">Rynek MENA</span>
-            </div>
-          </div>
-          <img class="accordion-img"
-            src="<?php echo esc_url(hair_mod('img_iran','https://hairevolution.pl/wp-content/uploads/2026/03/iran-768x1024.jpg')); ?>"
-            alt="Włosy irańskie"
-            onerror="this.outerHTML='<div class=\'accordion-img-placeholder\'>🇮🇷</div>'">
-        </div>
-      </div>
-
-      <div class="accordion-item">
-        <button class="accordion-trigger" aria-expanded="false">
-          <span class="accordion-flag">🇹🇷</span>
-          <div class="accordion-label">
-            <h3>Turcja — Dense Wave</h3>
-            <span class="hair-badge">High Resistance</span>
-          </div>
-          <span class="accordion-arrow">▾</span>
-        </button>
-        <div class="accordion-body">
-          <div class="accordion-desc">
-            <p>Włosy tureckie są naturalnie falowane lub kręcone i posiadają bardzo gęstą strukturę. Charakteryzują się wysoką odpornością na zabiegi chemiczne.</p>
-            <div class="accordion-tags">
-              <span class="accordion-tag">Naturalnie falowane</span>
-              <span class="accordion-tag">Bardzo gęste</span>
-              <span class="accordion-tag">Odporne chemicznie</span>
-              <span class="accordion-tag">Segment premium</span>
-            </div>
-          </div>
-          <img class="accordion-img"
-            src="<?php echo esc_url(hair_mod('img_turcja','https://hairevolution.pl/wp-content/uploads/2026/03/turcja-768x1024.jpg')); ?>"
-            alt="Włosy tureckie"
-            onerror="this.outerHTML='<div class=\'accordion-img-placeholder\'>🇹🇷</div>'">
-        </div>
-      </div>
-
-      <div class="accordion-item">
-        <button class="accordion-trigger" aria-expanded="false">
-          <span class="accordion-flag">🇲🇲</span>
-          <div class="accordion-label">
-            <h3>Birma — Natural Straight</h3>
-            <span class="hair-badge">Light Structure</span>
-          </div>
-          <span class="accordion-arrow">▾</span>
-        </button>
-        <div class="accordion-body">
-          <div class="accordion-desc">
-            <p>Włosy birmańskie są zbliżone strukturą do włosów chińskich, jednak zazwyczaj posiadają cieńszą włosinę i delikatniejszy połysk. Doskonale nadają się do produkcji peruk i przedłużeń.</p>
-            <div class="accordion-tags">
-              <span class="accordion-tag">Cienka włosina</span>
-              <span class="accordion-tag">Naturalny wygląd</span>
-              <span class="accordion-tag">Peruki / Przedłużenia</span>
-              <span class="accordion-tag">Delikatny połysk</span>
-            </div>
-          </div>
-          <img class="accordion-img"
-            src="<?php echo esc_url(hair_mod('img_birma','https://hairevolution.pl/wp-content/uploads/2026/03/IMG_9895-768x1024.jpg')); ?>"
-            alt="Włosy birmańskie"
-            onerror="this.outerHTML='<div class=\'accordion-img-placeholder\'>🇲🇲</div>'">
-        </div>
-      </div>
+      <?php endforeach; ?>
 
     </div>
   </div>
