@@ -1,17 +1,20 @@
 <?php get_header(); ?>
 
 <!-- HERO -->
+<?php
+$hero_bg = hair_mod('hero_bg', 'https://hairevolution.pl/wp-content/uploads/2026/03/przedluzgym-20-of-215-scaled.jpg');
+?>
 <section class="hero" id="hero">
-  <div class="hero-bg"></div>
+  <div class="hero-bg" style="background-image:url('<?php echo esc_url($hero_bg); ?>');"></div>
   <div class="hero-overlay"></div>
   <div class="container">
     <div class="hero-content">
       <span class="hero-location">Wrocław, Polska</span>
-      <h1>Hair Evolution<em>Factory</em></h1>
-      <p class="hero-sub">Fabryka przemysłowego farbowania włosów naturalnych.<br>Współpracujemy wyłącznie w modelu B2B.</p>
+      <h1><?php echo esc_html(hair_mod('hero_title','Hair Evolution')); ?><em><?php echo esc_html(hair_mod('hero_subtitle','Factory')); ?></em></h1>
+      <p class="hero-sub"><?php echo esc_html(hair_mod('hero_desc','Fabryka przemysłowego farbowania włosów naturalnych. Współpracujemy wyłącznie w modelu B2B.')); ?></p>
       <div class="hero-buttons">
-        <a href="#calculator" class="btn btn-gold">Oblicz cenę</a>
-        <a href="#about" class="btn btn-outline-light">O Fabryce</a>
+        <a href="#calculator" class="btn btn-gold"><?php echo esc_html(hair_mod('hero_btn1','Oblicz cenę')); ?></a>
+        <a href="#about" class="btn btn-outline-light"><?php echo esc_html(hair_mod('hero_btn2','O Fabryce')); ?></a>
       </div>
     </div>
   </div>
@@ -24,11 +27,11 @@
       <div class="about-text reveal">
         <span class="section-tag">O Fabryce</span>
         <h2 class="section-title">
-          Nowoczesna fabryka<br>
-          <span class="italic-gold">farbowania włosów</span>
+          <?php echo esc_html(hair_mod('about_title','Nowoczesna fabryka')); ?><br>
+          <span class="italic-gold"><?php echo esc_html(hair_mod('about_gold','farbowania włosów')); ?></span>
         </h2>
-        <p>Hair Evolution Factory to nowoczesna fabryka przemysłowego farbowania włosów naturalnych zlokalizowana we Wrocławiu. Specjalizujemy się w dostarczaniu zabarwionych pasm włosów dla salonów fryzjerskich, marek własnych i dystrybutorów hurtowych.</p>
-        <p>Dzięki skali produkcji przemysłowej jesteśmy w stanie oferować stabilną jakość, powtarzalność koloru oraz konkurencyjne ceny nieosiągalne przy produkcji rzemieślniczej.</p>
+        <p><?php echo esc_html(hair_mod('about_p1','Hair Evolution Factory to nowoczesna fabryka przemysłowego farbowania włosów naturalnych zlokalizowana we Wrocławiu.')); ?></p>
+        <p><?php echo esc_html(hair_mod('about_p2','Dzięki skali produkcji przemysłowej jesteśmy w stanie oferować stabilną jakość, powtarzalność koloru oraz konkurencyjne ceny.')); ?></p>
         <div class="about-stats">
           <div class="about-stat">
             <strong>Własna fabryka</strong>
@@ -46,9 +49,10 @@
       </div>
 
       <div class="about-image-wrap reveal reveal-d2">
+        <?php $about_img = hair_mod('about_img','https://hairevolution.pl/wp-content/uploads/2026/03/przedluzgym-20-of-215-scaled.jpg'); ?>
         <img
           class="about-image"
-          src="https://hairevolution.pl/wp-content/uploads/2026/03/przedluzgym-20-of-215-scaled.jpg"
+          src="<?php echo esc_url($about_img); ?>"
           alt="Włosy naturalne – Hair Evolution Factory"
           onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
         >
@@ -93,7 +97,7 @@
             </div>
           </div>
           <img class="accordion-img"
-            src="https://hairevolution.pl/wp-content/uploads/2026/03/wietnam-768x1024.jpg"
+            src="<?php echo esc_url(hair_mod('img_wietnam','https://hairevolution.pl/wp-content/uploads/2026/03/wietnam-768x1024.jpg')); ?>"
             alt="Włosy wietnamskie"
             onerror="this.outerHTML='<div class=\'accordion-img-placeholder\'>🇻🇳</div>'">
         </div>
@@ -119,7 +123,7 @@
             </div>
           </div>
           <img class="accordion-img"
-            src="https://hairevolution.pl/wp-content/uploads/2026/03/india-768x1024.jpg"
+            src="<?php echo esc_url(hair_mod('img_indie','https://hairevolution.pl/wp-content/uploads/2026/03/india-768x1024.jpg')); ?>"
             alt="Włosy indyjskie"
             onerror="this.outerHTML='<div class=\'accordion-img-placeholder\'>🇮🇳</div>'">
         </div>
@@ -145,7 +149,7 @@
             </div>
           </div>
           <img class="accordion-img"
-            src="https://hairevolution.pl/wp-content/uploads/2026/03/chiny-768x1024.jpg"
+            src="<?php echo esc_url(hair_mod('img_chiny','https://hairevolution.pl/wp-content/uploads/2026/03/chiny-768x1024.jpg')); ?>"
             alt="Włosy chińskie"
             onerror="this.outerHTML='<div class=\'accordion-img-placeholder\'>🇨🇳</div>'">
         </div>
@@ -171,7 +175,7 @@
             </div>
           </div>
           <img class="accordion-img"
-            src="https://hairevolution.pl/wp-content/uploads/2026/03/iran-768x1024.jpg"
+            src="<?php echo esc_url(hair_mod('img_iran','https://hairevolution.pl/wp-content/uploads/2026/03/iran-768x1024.jpg')); ?>"
             alt="Włosy irańskie"
             onerror="this.outerHTML='<div class=\'accordion-img-placeholder\'>🇮🇷</div>'">
         </div>
@@ -197,7 +201,7 @@
             </div>
           </div>
           <img class="accordion-img"
-            src="https://hairevolution.pl/wp-content/uploads/2026/03/turcja-768x1024.jpg"
+            src="<?php echo esc_url(hair_mod('img_turcja','https://hairevolution.pl/wp-content/uploads/2026/03/turcja-768x1024.jpg')); ?>"
             alt="Włosy tureckie"
             onerror="this.outerHTML='<div class=\'accordion-img-placeholder\'>🇹🇷</div>'">
         </div>
@@ -223,7 +227,7 @@
             </div>
           </div>
           <img class="accordion-img"
-            src="https://hairevolution.pl/wp-content/uploads/2026/03/IMG_9895-768x1024.jpg"
+            src="<?php echo esc_url(hair_mod('img_birma','https://hairevolution.pl/wp-content/uploads/2026/03/IMG_9895-768x1024.jpg')); ?>"
             alt="Włosy birmańskie"
             onerror="this.outerHTML='<div class=\'accordion-img-placeholder\'>🇲🇲</div>'">
         </div>
@@ -488,15 +492,15 @@
         <div class="contact-details">
           <div class="contact-detail">
             <div class="contact-detail-icon">📍</div>
-            <span>Wrocław, Polska</span>
+            <span><?php echo esc_html(hair_mod('contact_city','Wrocław, Polska')); ?></span>
           </div>
           <div class="contact-detail">
             <div class="contact-detail-icon">✉️</div>
-            <a href="mailto:kontakt@hairevolutionfactory.pl">kontakt@hairevolutionfactory.pl</a>
+            <a href="mailto:<?php echo esc_attr(hair_mod('contact_email','kontakt@hairevolutionfactory.pl')); ?>"><?php echo esc_html(hair_mod('contact_email','kontakt@hairevolutionfactory.pl')); ?></a>
           </div>
           <div class="contact-detail">
             <div class="contact-detail-icon">📞</div>
-            <a href="tel:+48573568410">+48 573 568 410</a>
+            <a href="tel:<?php echo esc_attr(preg_replace('/\s+/','',(string)hair_mod('contact_phone','+48 573 568 410'))); ?>"><?php echo esc_html(hair_mod('contact_phone','+48 573 568 410')); ?></a>
           </div>
         </div>
       </div>
