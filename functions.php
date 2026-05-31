@@ -54,21 +54,21 @@ function hair_customizer_register( $wp_customize ) {
         'priority' => 30,
     ]);
 
-    // ── SEKCJA: Obrazy ────────────────────────
+    // ── SECTION: Images ───────────────────────
     $wp_customize->add_section('hair_images', [
-        'title' => '📷 Obrazy',
+        'title' => '📷 Images',
         'panel' => 'hair_panel',
     ]);
 
     $images = [
-        'hero_bg'    => ['Tło sekcji Hero (ciemne zdjęcie)',  'https://hairevolution.pl/wp-content/uploads/2026/03/przedluzgym-20-of-215-scaled.jpg'],
-        'about_img'  => ['Zdjęcie w sekcji "O Fabryce"',      'https://hairevolution.pl/wp-content/uploads/2026/03/przedluzgym-20-of-215-scaled.jpg'],
-        'img_wietnam'=> ['Zdjęcie – Wietnam',                  'https://hairevolution.pl/wp-content/uploads/2026/03/wietnam-768x1024.jpg'],
-        'img_indie'  => ['Zdjęcie – Indie',                    'https://hairevolution.pl/wp-content/uploads/2026/03/india-768x1024.jpg'],
-        'img_chiny'  => ['Zdjęcie – Chiny',                    'https://hairevolution.pl/wp-content/uploads/2026/03/chiny-768x1024.jpg'],
-        'img_iran'   => ['Zdjęcie – Iran',                     'https://hairevolution.pl/wp-content/uploads/2026/03/iran-768x1024.jpg'],
-        'img_turcja' => ['Zdjęcie – Turcja',                   'https://hairevolution.pl/wp-content/uploads/2026/03/turcja-768x1024.jpg'],
-        'img_birma'  => ['Zdjęcie – Birma',                    'https://hairevolution.pl/wp-content/uploads/2026/03/IMG_9895-768x1024.jpg'],
+        'hero_bg'    => ['Hero background image (dark photo)',  'https://hairevolution.pl/wp-content/uploads/2026/03/przedluzgym-20-of-215-scaled.jpg'],
+        'about_img'  => ['About section photo',                 'https://hairevolution.pl/wp-content/uploads/2026/03/przedluzgym-20-of-215-scaled.jpg'],
+        'img_wietnam'=> ['Hair photo – Vietnam',                'https://hairevolution.pl/wp-content/uploads/2026/03/wietnam-768x1024.jpg'],
+        'img_indie'  => ['Hair photo – India',                  'https://hairevolution.pl/wp-content/uploads/2026/03/india-768x1024.jpg'],
+        'img_chiny'  => ['Hair photo – China',                  'https://hairevolution.pl/wp-content/uploads/2026/03/chiny-768x1024.jpg'],
+        'img_iran'   => ['Hair photo – Iran',                   'https://hairevolution.pl/wp-content/uploads/2026/03/iran-768x1024.jpg'],
+        'img_turcja' => ['Hair photo – Turkey',                 'https://hairevolution.pl/wp-content/uploads/2026/03/turcja-768x1024.jpg'],
+        'img_birma'  => ['Hair photo – Myanmar',                'https://hairevolution.pl/wp-content/uploads/2026/03/IMG_9895-768x1024.jpg'],
     ];
 
     foreach ( $images as $key => $data ) {
@@ -82,18 +82,18 @@ function hair_customizer_register( $wp_customize ) {
         ]));
     }
 
-    // ── SEKCJA: Hero ──────────────────────────
+    // ── SECTION: Hero ─────────────────────────
     $wp_customize->add_section('hair_hero', [
-        'title' => '🦸 Sekcja Hero',
+        'title' => '🦸 Hero Section',
         'panel' => 'hair_panel',
     ]);
 
     $hero_fields = [
-        'hero_title'    => ['Tytuł (linia 1)',   'Hair Evolution'],
-        'hero_subtitle' => ['Tytuł (linia 2 – złoty kursyw)', 'Factory'],
-        'hero_desc'     => ['Opis pod tytułem',  'Fabryka przemysłowego farbowania włosów naturalnych. Współpracujemy wyłącznie w modelu B2B.'],
-        'hero_btn1'     => ['Tekst przycisku 1', 'Oblicz cenę'],
-        'hero_btn2'     => ['Tekst przycisku 2', 'O Fabryce'],
+        'hero_title'    => ['Title (line 1)',             'Hair Evolution'],
+        'hero_subtitle' => ['Title (line 2 – gold italic)', 'Factory'],
+        'hero_desc'     => ['Description text',           'Fabryka przemysłowego farbowania włosów naturalnych. Współpracujemy wyłącznie w modelu B2B.'],
+        'hero_btn1'     => ['Button 1 label',             'Oblicz cenę'],
+        'hero_btn2'     => ['Button 2 label',             'O Fabryce'],
     ];
 
     foreach ( $hero_fields as $key => $data ) {
@@ -108,18 +108,18 @@ function hair_customizer_register( $wp_customize ) {
         ]);
     }
 
-    // ── SEKCJA: O Fabryce ─────────────────────
+    // ── SECTION: About ────────────────────────
     $wp_customize->add_section('hair_about', [
-        'title' => '🏭 O Fabryce',
+        'title' => '🏭 About Section',
         'panel' => 'hair_panel',
     ]);
 
     $about_fields = [
-        'about_title' => ['Tytuł sekcji',    'Nowoczesna fabryka'],
-        'about_gold'  => ['Złoty podtytuł',  'farbowania włosów'],
-        'about_p1'    => ['Akapit 1',         'Hair Evolution Factory to nowoczesna fabryka przemysłowego farbowania włosów naturalnych zlokalizowana we Wrocławiu.'],
-        'about_p2'    => ['Akapit 2',         'Dzięki skali produkcji przemysłowej jesteśmy w stanie oferować stabilną jakość, powtarzalność koloru oraz konkurencyjne ceny.'],
-        'about_years' => ['Liczba lat doświadczenia', '10+'],
+        'about_title' => ['Section heading',       'Nowoczesna fabryka'],
+        'about_gold'  => ['Gold italic subheading', 'farbowania włosów'],
+        'about_p1'    => ['Paragraph 1',            'Hair Evolution Factory to nowoczesna fabryka przemysłowego farbowania włosów naturalnych zlokalizowana we Wrocławiu.'],
+        'about_p2'    => ['Paragraph 2',            'Dzięki skali produkcji przemysłowej jesteśmy w stanie oferować stabilną jakość, powtarzalność koloru oraz konkurencyjne ceny.'],
+        'about_years' => ['Years of experience',    '10+'],
     ];
 
     foreach ( $about_fields as $key => $data ) {
@@ -135,17 +135,17 @@ function hair_customizer_register( $wp_customize ) {
         ]);
     }
 
-    // ── SEKCJA: Kontakt ───────────────────────
+    // ── SECTION: Contact ──────────────────────
     $wp_customize->add_section('hair_contact', [
-        'title' => '📞 Dane kontaktowe',
+        'title' => '📞 Contact Details',
         'panel' => 'hair_panel',
     ]);
 
     $contact_fields = [
-        'contact_city'  => ['Miasto / kraj',   'Wrocław, Polska'],
-        'contact_email' => ['E-mail',           'kontakt@hairevolutionfactory.pl'],
-        'contact_phone' => ['Telefon',          '+48 573 568 410'],
-        'contact_hours' => ['Godziny pracy',    'Pn–Pt: 8:00–17:00'],
+        'contact_city'  => ['City / Country',  'Wrocław, Polska'],
+        'contact_email' => ['Email address',   'kontakt@hairevolutionfactory.pl'],
+        'contact_phone' => ['Phone number',    '+48 573 568 410'],
+        'contact_hours' => ['Working hours',   'Pn–Pt: 8:00–17:00'],
     ];
 
     foreach ( $contact_fields as $key => $data ) {
@@ -160,9 +160,9 @@ function hair_customizer_register( $wp_customize ) {
         ]);
     }
 
-    // ── SEKCJA: Footer ────────────────────────
+    // ── SECTION: Footer ───────────────────────
     $wp_customize->add_section('hair_footer', [
-        'title' => '🦶 Stopka',
+        'title' => '🦶 Footer',
         'panel' => 'hair_panel',
     ]);
 
@@ -171,14 +171,14 @@ function hair_customizer_register( $wp_customize ) {
         'sanitize_callback' => 'sanitize_textarea_field',
     ]);
     $wp_customize->add_control('hair_footer_desc', [
-        'label'   => 'Opis w stopce',
+        'label'   => 'Footer description text',
         'section' => 'hair_footer',
         'type'    => 'textarea',
     ]);
 }
 add_action('customize_register', 'hair_customizer_register');
 
-// Helper: pobierz ustawienie z Customizera (z wartością domyślną)
+// Helper: get Customizer setting with fallback default
 function hair_mod( $key, $default = '' ) {
     return get_theme_mod( "hair_{$key}", $default );
 }
