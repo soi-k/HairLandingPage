@@ -97,22 +97,36 @@ $hero_bg = hair_mod('hero_bg', 'https://hairevolution.pl/wp-content/uploads/2026
           </div>
         </div>
         <p class="hair-box-desc"><?php echo esc_html($desc); ?></p>
-        <div class="hair-slider-wrap">
-          <button class="slider-btn slider-prev" aria-label="Previous">&#8249;</button>
-          <div class="hair-slider" data-slider>
-            <?php for ($i = 1; $i <= 5; $i++) :
-              $img_url = hair_mod("box{$n}_img{$i}", '');
-            ?>
-            <div class="hair-slide">
-              <?php if ($img_url) : ?>
-                <img src="<?php echo esc_url($img_url); ?>" alt="<?php echo esc_attr($title); ?> – <?php echo $i; ?>">
-              <?php else : ?>
-                <div class="hair-slide-placeholder">Zdjęcie <?php echo $i; ?></div>
-              <?php endif; ?>
+        <div class="hair-carousel" data-carousel>
+          <button class="car-btn car-prev" aria-label="Poprzednie">
+            <span class="car-btn-icon">
+              <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 1L1 7l6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </button>
+          <div class="car-window">
+            <div class="car-track">
+              <?php for ($i = 1; $i <= 20; $i++) :
+                $img_url = hair_mod("box{$n}_img{$i}", '');
+              ?>
+              <div class="car-slide">
+                <?php if ($img_url) : ?>
+                  <img src="<?php echo esc_url($img_url); ?>" alt="<?php echo esc_attr($title); ?> – <?php echo $i; ?>">
+                <?php else : ?>
+                  <div class="car-slide-placeholder">Zdjęcie <?php echo $i; ?></div>
+                <?php endif; ?>
+              </div>
+              <?php endfor; ?>
             </div>
-            <?php endfor; ?>
           </div>
-          <button class="slider-btn slider-next" aria-label="Next">&#8250;</button>
+          <button class="car-btn car-next" aria-label="Następne">
+            <span class="car-btn-icon">
+              <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 1l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </button>
         </div>
       </div>
       <?php endforeach; ?>

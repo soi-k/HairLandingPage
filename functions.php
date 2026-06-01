@@ -29,14 +29,14 @@ function hair_enqueue_assets() {
         'hair-main',
         get_template_directory_uri() . '/assets/css/main.css',
         ['google-fonts'],
-        '1.0.3'
+        '1.0.4'
     );
 
     wp_enqueue_script(
         'hair-main',
         get_template_directory_uri() . '/assets/js/main.js',
         [],
-        '1.0.3',
+        '1.0.4',
         true
     );
 }
@@ -198,7 +198,7 @@ function hair_customizer_register( $wp_customize ) {
             'type'    => 'textarea',
         ]);
 
-        for ( $i = 1; $i <= 5; $i++ ) {
+        for ( $i = 1; $i <= 20; $i++ ) {
             $wp_customize->add_setting( "hair_box{$n}_img{$i}", [
                 'default'           => '',
                 'sanitize_callback' => 'esc_url_raw',

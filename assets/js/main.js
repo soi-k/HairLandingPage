@@ -24,18 +24,99 @@ if (hamburger && navMenu) {
   });
 }
 
-/* ========== HAIR TYPE SLIDERS ========== */
-document.querySelectorAll('.hair-box').forEach(box => {
-  const slider = box.querySelector('[data-slider]');
-  const prev   = box.querySelector('.slider-prev');
-  const next   = box.querySelector('.slider-next');
-  if (!slider || !prev || !next) return;
+/* ========== HAIR TYPE CAROUSELS ========== */
+(function () {
+  const GAP     = 12;   // must match CSS gap on .car-track
+  const DUR     = 520;  // transition ms
+  const AUTO_MS = 3500; // autoplay interval ms
 
-  const getScrollAmount = () => (slider.querySelector('.hair-slide')?.offsetWidth ?? 200) + 12;
+  function visCount() {
+    if (window.innerWidth <= 480) return 2;
+    if (window.innerWidth <= 768) return 3;
+    return 5;
+  }
 
-  prev.addEventListener('click', () => slider.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' }));
-  next.addEventListener('click', () => slider.scrollBy({ left:  getScrollAmount(), behavior: 'smooth' }));
-});
+  function initCarousel(el) {
+    const track = el.querySelector('.car-track');
+    const win   = el.querySelector('.car-window');
+    const prevB = el.querySelector('.car-prev');
+    const nextB = el.querySelector('.car-next');
+    if (!track || !win) return;
+
+    const real = Array.from(track.querySelectorAll('.car-slide'));
+    const N    = real.length;
+    const V    = visCount();
+    if (!N) return;
+
+    let pos  = V;
+    let busy = false;
+    let timer = null;
+
+    // Prepend clones of last V slides (reversed so order stays correct)
+    real.slice(-V).reverse().forEach(s => {
+      const c = s.cloneNode(true);
+      c.setAttribute('aria-hidden', 'true');
+      track.prepend(c);
+    });
+    // Append clones of first V slides
+    real.slice(0, V).forEach(s => {
+      const c = s.cloneNode(true);
+      c.setAttribute('aria-hidden', 'true');
+      track.appendChild(c);
+    });
+
+    function slideStep() {
+      const s = track.querySelector('.car-slide');
+      return s ? s.offsetWidth + GAP : 200;
+    }
+
+    function layout() {
+      const w  = win.offsetWidth;
+      const sw = (w - GAP * (V - 1)) / V;
+      track.querySelectorAll('.car-slide').forEach(s => { s.style.width = sw + 'px'; });
+    }
+
+    function setPos(p, animate) {
+      pos = p;
+      if (!animate) {
+        track.style.transition = 'none';
+        void track.offsetHeight; // flush transition before transform
+      } else {
+        track.style.transition = `transform ${DUR}ms cubic-bezier(0.25,0.46,0.45,0.94)`;
+      }
+      track.style.transform = `translateX(-${pos * slideStep()}px)`;
+    }
+
+    function move(dir) {
+      if (busy) return;
+      busy = true;
+      const next = pos + dir;
+      pos = next;
+      track.style.transition = `transform ${DUR}ms cubic-bezier(0.25,0.46,0.45,0.94)`;
+      track.style.transform  = `translateX(-${next * slideStep()}px)`;
+      setTimeout(() => {
+        if (next < V)          setPos(N + next,  false); // wrap forward
+        else if (next >= N + V) setPos(next - N,  false); // wrap back
+        busy = false;
+      }, DUR + 40);
+    }
+
+    function autoStart() { timer = setInterval(() => move(1), AUTO_MS); }
+    function autoStop()  { clearInterval(timer); }
+
+    layout();
+    setPos(V, false);
+
+    prevB?.addEventListener('click', () => { autoStop(); move(-1); autoStart(); });
+    nextB?.addEventListener('click', () => { autoStop(); move(1);  autoStart(); });
+    el.addEventListener('mouseenter', autoStop);
+    el.addEventListener('mouseleave', autoStart);
+
+    autoStart();
+  }
+
+  document.querySelectorAll('[data-carousel]').forEach(initCarousel);
+})();
 
 /* ========== PRICE CALCULATOR ========== */
 const basePrices = {
