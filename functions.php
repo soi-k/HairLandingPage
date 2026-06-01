@@ -47,68 +47,69 @@ add_action('wp_enqueue_scripts', 'hair_enqueue_assets');
 // Appearance → Customize → ustawienia strony
 // =============================================
 
-/* Custom gallery control — multi-select images + videos from Media Library */
-class Hair_Media_Gallery_Control extends WP_Customize_Control {
-    public $type = 'hair_media_gallery';
-
-    public function enqueue() {
-        wp_enqueue_media();
-        wp_enqueue_script(
-            'hair-gallery-ctrl',
-            get_template_directory_uri() . '/assets/js/customize-controls.js',
-            ['jquery', 'customize-controls', 'media-views'],
-            '1.0.6',
-            true
-        );
-        wp_add_inline_style( 'customize-controls', '
-            .hgc-thumbs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;min-height:16px}
-            .hgc-thumb{width:52px;height:52px;border-radius:4px;overflow:hidden;border:1px solid #ddd;background:#f0f0f0}
-            .hgc-thumb img{width:100%;height:100%;object-fit:cover;display:block}
-            .hgc-thumb-video{display:flex;align-items:center;justify-content:center;font-size:18px;color:#555}
-            .hgc-actions{display:flex;gap:6px;margin-top:4px}
-            .hgc-clear{color:#d63638!important}
-        ' );
-    }
-
-    public function render_content() {
-        $value = $this->value();
-        $ids   = array_filter( array_map( 'absint', explode( ',', $value ) ) );
-        ?>
-        <label><span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span></label>
-        <div class="hgc-wrap">
-            <div class="hgc-thumbs">
-                <?php foreach ( $ids as $id ) :
-                    $mime = get_post_mime_type( $id );
-                    if ( $mime && strpos( $mime, 'video' ) === 0 ) : ?>
-                        <div class="hgc-thumb hgc-thumb-video" title="Video"><span>&#9654;</span></div>
-                    <?php else :
-                        $src = wp_get_attachment_image_src( $id, [ 52, 52 ] );
-                        if ( $src ) : ?>
-                            <div class="hgc-thumb"><img src="<?php echo esc_url( $src[0] ); ?>" alt=""></div>
-                        <?php endif;
-                    endif;
-                endforeach; ?>
-            </div>
-            <div class="hgc-actions">
-                <button type="button" class="button hgc-select">
-                    <?php echo empty( $ids ) ? '+ Dodaj zdjęcia / filmy' : '&#9998; Zmień wybór (' . count( $ids ) . ')'; ?>
-                </button>
-                <?php if ( ! empty( $ids ) ) : ?>
-                <button type="button" class="button hgc-clear">&#10005;</button>
-                <?php endif; ?>
-            </div>
-            <input type="hidden" class="hgc-input" <?php $this->link(); ?> value="<?php echo esc_attr( $value ); ?>">
-        </div>
-        <?php
-    }
-}
-
 function hair_sanitize_gallery( $value ) {
     $ids = array_filter( array_map( 'absint', explode( ',', $value ) ) );
     return implode( ',', $ids );
 }
 
 function hair_customizer_register( $wp_customize ) {
+
+    if ( ! class_exists( 'Hair_Media_Gallery_Control' ) ) {
+        class Hair_Media_Gallery_Control extends WP_Customize_Control {
+            public $type = 'hair_media_gallery';
+
+            public function enqueue() {
+                wp_enqueue_media();
+                wp_enqueue_script(
+                    'hair-gallery-ctrl',
+                    get_template_directory_uri() . '/assets/js/customize-controls.js',
+                    ['jquery', 'customize-controls', 'media-views'],
+                    '1.0.6',
+                    true
+                );
+                wp_add_inline_style( 'customize-controls', '
+                    .hgc-thumbs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;min-height:16px}
+                    .hgc-thumb{width:52px;height:52px;border-radius:4px;overflow:hidden;border:1px solid #ddd;background:#f0f0f0}
+                    .hgc-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+                    .hgc-thumb-video{display:flex;align-items:center;justify-content:center;font-size:18px;color:#555}
+                    .hgc-actions{display:flex;gap:6px;margin-top:4px}
+                    .hgc-clear{color:#d63638!important}
+                ' );
+            }
+
+            public function render_content() {
+                $value = $this->value();
+                $ids   = array_filter( array_map( 'absint', explode( ',', $value ) ) );
+                ?>
+                <label><span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span></label>
+                <div class="hgc-wrap">
+                    <div class="hgc-thumbs">
+                        <?php foreach ( $ids as $id ) :
+                            $mime = get_post_mime_type( $id );
+                            if ( $mime && strpos( $mime, 'video' ) === 0 ) : ?>
+                                <div class="hgc-thumb hgc-thumb-video" title="Video"><span>&#9654;</span></div>
+                            <?php else :
+                                $src = wp_get_attachment_image_src( $id, [ 52, 52 ] );
+                                if ( $src ) : ?>
+                                    <div class="hgc-thumb"><img src="<?php echo esc_url( $src[0] ); ?>" alt=""></div>
+                                <?php endif;
+                            endif;
+                        endforeach; ?>
+                    </div>
+                    <div class="hgc-actions">
+                        <button type="button" class="button hgc-select">
+                            <?php echo empty( $ids ) ? '+ Dodaj zdjęcia / filmy' : '&#9998; Zmień wybór (' . count( $ids ) . ')'; ?>
+                        </button>
+                        <?php if ( ! empty( $ids ) ) : ?>
+                        <button type="button" class="button hgc-clear">&#10005;</button>
+                        <?php endif; ?>
+                    </div>
+                    <input type="hidden" class="hgc-input" <?php $this->link(); ?> value="<?php echo esc_attr( $value ); ?>">
+                </div>
+                <?php
+            }
+        }
+    }
 
     // ── PANEL główny ──────────────────────────
     $wp_customize->add_panel('hair_panel', [
