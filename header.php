@@ -4,6 +4,7 @@
   <meta charset="<?php bloginfo('charset'); ?>">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Hair Evolution Factory — Nowoczesna fabryka przemysłowego farbowania włosów naturalnych. Wrocław, Polska. Współpracujemy wyłącznie w modelu B2B.">
+  <meta name="robots" content="noindex, nofollow">
   <link rel="profile" href="https://gmpg.org/xfn/11">
   <?php wp_head(); ?>
 </head>
