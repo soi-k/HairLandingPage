@@ -107,17 +107,7 @@ $hero_bg = hair_mod('hero_bg', 'https://hairevolution.pl/wp-content/uploads/2026
           </button>
           <div class="car-window">
             <div class="car-track">
-              <?php for ($i = 1; $i <= 20; $i++) :
-                $img_url = hair_mod("box{$n}_img{$i}", '');
-              ?>
-              <div class="car-slide">
-                <?php if ($img_url) : ?>
-                  <img src="<?php echo esc_url($img_url); ?>" alt="<?php echo esc_attr($title); ?> – <?php echo $i; ?>">
-                <?php else : ?>
-                  <div class="car-slide-placeholder">Zdjęcie <?php echo $i; ?></div>
-                <?php endif; ?>
-              </div>
-              <?php endfor; ?>
+              <?php hair_render_gallery("box{$n}_gallery"); ?>
             </div>
           </div>
           <button class="car-btn car-next" aria-label="Następne">

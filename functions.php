@@ -29,14 +29,14 @@ function hair_enqueue_assets() {
         'hair-main',
         get_template_directory_uri() . '/assets/css/main.css',
         ['google-fonts'],
-        '1.0.4'
+        '1.0.5'
     );
 
     wp_enqueue_script(
         'hair-main',
         get_template_directory_uri() . '/assets/js/main.js',
         [],
-        '1.0.4',
+        '1.0.5',
         true
     );
 }
@@ -46,6 +46,68 @@ add_action('wp_enqueue_scripts', 'hair_enqueue_assets');
 // WORDPRESS CUSTOMIZER
 // Appearance → Customize → ustawienia strony
 // =============================================
+
+/* Custom gallery control — multi-select images + videos from Media Library */
+class Hair_Media_Gallery_Control extends WP_Customize_Control {
+    public $type = 'hair_media_gallery';
+
+    public function enqueue() {
+        wp_enqueue_media();
+        wp_enqueue_script(
+            'hair-gallery-ctrl',
+            get_template_directory_uri() . '/assets/js/customize-controls.js',
+            ['jquery', 'customize-controls', 'media-views'],
+            '1.0.5',
+            true
+        );
+        wp_add_inline_style( 'customize-controls', '
+            .hgc-thumbs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;min-height:16px}
+            .hgc-thumb{width:52px;height:52px;border-radius:4px;overflow:hidden;border:1px solid #ddd;background:#f0f0f0}
+            .hgc-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+            .hgc-thumb-video{display:flex;align-items:center;justify-content:center;font-size:18px;color:#555}
+            .hgc-actions{display:flex;gap:6px;margin-top:4px}
+            .hgc-clear{color:#d63638!important}
+        ' );
+    }
+
+    public function render_content() {
+        $value = $this->value();
+        $ids   = array_filter( array_map( 'absint', explode( ',', $value ) ) );
+        ?>
+        <label><span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span></label>
+        <div class="hgc-wrap">
+            <div class="hgc-thumbs">
+                <?php foreach ( $ids as $id ) :
+                    $mime = get_post_mime_type( $id );
+                    if ( $mime && strpos( $mime, 'video' ) === 0 ) : ?>
+                        <div class="hgc-thumb hgc-thumb-video" title="Video"><span>&#9654;</span></div>
+                    <?php else :
+                        $src = wp_get_attachment_image_src( $id, [ 52, 52 ] );
+                        if ( $src ) : ?>
+                            <div class="hgc-thumb"><img src="<?php echo esc_url( $src[0] ); ?>" alt=""></div>
+                        <?php endif;
+                    endif;
+                endforeach; ?>
+            </div>
+            <div class="hgc-actions">
+                <button type="button" class="button hgc-select">
+                    <?php echo empty( $ids ) ? '+ Dodaj zdjęcia / filmy' : '&#9998; Zmień wybór (' . count( $ids ) . ')'; ?>
+                </button>
+                <?php if ( ! empty( $ids ) ) : ?>
+                <button type="button" class="button hgc-clear">&#10005;</button>
+                <?php endif; ?>
+            </div>
+            <input type="hidden" class="hgc-input" <?php $this->link(); ?> value="<?php echo esc_attr( $value ); ?>">
+        </div>
+        <?php
+    }
+}
+
+function hair_sanitize_gallery( $value ) {
+    $ids = array_filter( array_map( 'absint', explode( ',', $value ) ) );
+    return implode( ',', $ids );
+}
+
 function hair_customizer_register( $wp_customize ) {
 
     // ── PANEL główny ──────────────────────────
@@ -198,16 +260,16 @@ function hair_customizer_register( $wp_customize ) {
             'type'    => 'textarea',
         ]);
 
-        for ( $i = 1; $i <= 20; $i++ ) {
-            $wp_customize->add_setting( "hair_box{$n}_img{$i}", [
-                'default'           => '',
-                'sanitize_callback' => 'esc_url_raw',
-            ]);
-            $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, "hair_box{$n}_img{$i}", [
-                'label'   => "Box {$n} – Image {$i}",
+        $wp_customize->add_setting( "hair_box{$n}_gallery", [
+            'default'           => '',
+            'sanitize_callback' => 'hair_sanitize_gallery',
+        ]);
+        $wp_customize->add_control(
+            new Hair_Media_Gallery_Control( $wp_customize, "hair_box{$n}_gallery", [
+                'label'   => "Box {$n} – Photos & Videos",
                 'section' => 'hair_types',
-            ]));
-        }
+            ])
+        );
     }
 
     // ── SECTION: Footer ───────────────────────
@@ -231,6 +293,33 @@ add_action('customize_register', 'hair_customizer_register');
 // Helper: get Customizer setting with fallback default
 function hair_mod( $key, $default = '' ) {
     return get_theme_mod( "hair_{$key}", $default );
+}
+
+// Render carousel slides from a gallery Customizer setting (outputs HTML)
+function hair_render_gallery( $setting_key ) {
+    $raw = get_theme_mod( "hair_{$setting_key}", '' );
+    $ids = array_filter( array_map( 'absint', explode( ',', $raw ) ) );
+    if ( empty( $ids ) ) {
+        for ( $i = 1; $i <= 5; $i++ ) {
+            echo '<div class="car-slide"><div class="car-slide-placeholder">Zdjęcie ' . $i . '</div></div>';
+        }
+        return;
+    }
+    foreach ( $ids as $id ) {
+        $mime = get_post_mime_type( $id );
+        if ( $mime && strpos( $mime, 'video' ) === 0 ) {
+            $url = wp_get_attachment_url( $id );
+            if ( ! $url ) continue;
+            echo '<div class="car-slide car-slide-video">';
+            echo '<video src="' . esc_url( $url ) . '" muted playsinline loop preload="none"></video>';
+            echo '<div class="car-play-icon">&#9654;</div>';
+            echo '</div>';
+        } else {
+            $src = wp_get_attachment_image_src( $id, 'medium_large' );
+            if ( ! $src ) continue;
+            echo '<div class="car-slide"><img src="' . esc_url( $src[0] ) . '" alt="" loading="lazy"></div>';
+        }
+    }
 }
 
 // Allow SVG uploads

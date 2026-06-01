@@ -199,6 +199,21 @@ if (form) {
   });
 }
 
+/* ========== VIDEO SLIDES (play / pause on click) ========== */
+document.addEventListener('click', function (e) {
+  const slide = e.target.closest('.car-slide-video');
+  if (!slide) return;
+  const video = slide.querySelector('video');
+  if (!video) return;
+  if (video.paused) {
+    video.play();
+    slide.classList.add('playing');
+  } else {
+    video.pause();
+    slide.classList.remove('playing');
+  }
+});
+
 /* ========== SCROLL REVEAL ========== */
 const revealEls = document.querySelectorAll('.reveal');
 const observer  = new IntersectionObserver(entries => {
