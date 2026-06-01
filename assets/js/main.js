@@ -34,15 +34,18 @@ lb.innerHTML = `
 `;
 document.body.appendChild(lb);
 
-let lbOpenCallbacks = [];
+let isLbOpen = false;
+const carouselStopFns  = [];
+const carouselStartFns = [];
 
-function lbOpen(html) {
+function lbShow(html) {
   lb.querySelector('.lb-content').innerHTML = html;
   lb.classList.add('active');
   document.body.style.overflow = 'hidden';
+  isLbOpen = true;
+  carouselStopFns.forEach(fn => fn());
   const vid = lb.querySelector('video');
   if (vid) { vid.muted = false; vid.play(); }
-  lbOpenCallbacks.forEach(fn => fn());
 }
 
 function lbClose() {
@@ -51,11 +54,13 @@ function lbClose() {
   lb.classList.remove('active');
   lb.querySelector('.lb-content').innerHTML = '';
   document.body.style.overflow = '';
+  isLbOpen = false;
+  carouselStartFns.forEach(fn => fn());
 }
 
 lb.querySelector('.lb-backdrop').addEventListener('click', lbClose);
 lb.querySelector('.lb-close').addEventListener('click', lbClose);
-document.addEventListener('keydown', e => { if (e.key === 'Escape') lbClose(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && isLbOpen) lbClose(); });
 
 /* ========== HAIR TYPE CAROUSELS ========== */
 (function () {
@@ -94,15 +99,6 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') lbClose(); }
     let pos   = V;
     let busy  = false;
     let timer = null;
-    let lbOpen = false;
-
-    lbOpenCallbacks.push(() => { lbOpen = true;  autoStop(); });
-
-    lb.querySelector('.lb-backdrop').addEventListener('click', () => { lbOpen = false; autoStart(); });
-    lb.querySelector('.lb-close').addEventListener('click',    () => { lbOpen = false; autoStart(); });
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && lbOpen) { lbOpen = false; autoStart(); }
-    });
 
     // Prepend clones of last V slides
     real.slice(-V).reverse().forEach(s => {
@@ -154,16 +150,19 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') lbClose(); }
       }, DUR + 40);
     }
 
-    function autoStart() { if (!lbOpen) timer = setInterval(() => move(1), AUTO_MS); }
-    function autoStop()  { clearInterval(timer); }
+    function autoStop()  { clearInterval(timer); timer = null; }
+    function autoStart() { autoStop(); timer = setInterval(() => move(1), AUTO_MS); }
 
     layout();
     setPos(V, false);
 
+    carouselStopFns.push(autoStop);
+    carouselStartFns.push(autoStart);
+
     prevB?.addEventListener('click', () => { autoStop(); move(-1); autoStart(); });
     nextB?.addEventListener('click', () => { autoStop(); move(1);  autoStart(); });
     el.addEventListener('mouseenter', autoStop);
-    el.addEventListener('mouseleave', () => { if (!lbOpen) autoStart(); });
+    el.addEventListener('mouseleave', () => { if (!isLbOpen) autoStart(); });
 
     autoStart();
   }
@@ -180,9 +179,9 @@ document.addEventListener('click', function (e) {
   const fullUrl  = slide.dataset.full;
 
   if (videoUrl) {
-    lbOpen(`<video src="${videoUrl}" controls autoplay playsinline style="max-width:100%;max-height:85vh;border-radius:8px;"></video>`);
+    lbShow(`<video src="${videoUrl}" controls autoplay playsinline style="max-width:100%;max-height:85vh;border-radius:8px;"></video>`);
   } else if (fullUrl) {
-    lbOpen(`<img src="${fullUrl}" alt="" style="max-width:100%;max-height:85vh;border-radius:8px;object-fit:contain;">`);
+    lbShow(`<img src="${fullUrl}" alt="" style="max-width:100%;max-height:85vh;border-radius:8px;object-fit:contain;">`);
   }
 });
 
