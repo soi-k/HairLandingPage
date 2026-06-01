@@ -29,14 +29,14 @@ function hair_enqueue_assets() {
         'hair-main',
         get_template_directory_uri() . '/assets/css/main.css',
         ['google-fonts'],
-        '1.0.5'
+        '1.0.6'
     );
 
     wp_enqueue_script(
         'hair-main',
         get_template_directory_uri() . '/assets/js/main.js',
         [],
-        '1.0.5',
+        '1.0.6',
         true
     );
 }
@@ -57,7 +57,7 @@ class Hair_Media_Gallery_Control extends WP_Customize_Control {
             'hair-gallery-ctrl',
             get_template_directory_uri() . '/assets/js/customize-controls.js',
             ['jquery', 'customize-controls', 'media-views'],
-            '1.0.5',
+            '1.0.6',
             true
         );
         wp_add_inline_style( 'customize-controls', '
@@ -213,6 +213,21 @@ function hair_customizer_register( $wp_customize ) {
             'label'   => $data[0],
             'section' => 'hair_contact',
             'type'    => 'text',
+        ]);
+    }
+
+    foreach ( [
+        'contact_instagram' => 'Instagram URL (zostaw puste, aby ukryć)',
+        'contact_whatsapp'  => 'WhatsApp URL (np. https://wa.me/48573568410)',
+    ] as $key => $label ) {
+        $wp_customize->add_setting( "hair_{$key}", [
+            'default'           => '',
+            'sanitize_callback' => 'esc_url_raw',
+        ]);
+        $wp_customize->add_control( "hair_{$key}", [
+            'label'   => $label,
+            'section' => 'hair_contact',
+            'type'    => 'url',
         ]);
     }
 
