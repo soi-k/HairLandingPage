@@ -29,14 +29,14 @@ function hair_enqueue_assets() {
         'hair-main',
         get_template_directory_uri() . '/assets/css/main.css',
         ['google-fonts'],
-        '1.0.6'
+        '1.0.7'
     );
 
     wp_enqueue_script(
         'hair-main',
         get_template_directory_uri() . '/assets/js/main.js',
         [],
-        '1.0.6',
+        '1.0.7',
         true
     );
 }
@@ -64,7 +64,7 @@ function hair_customizer_register( $wp_customize ) {
                     'hair-gallery-ctrl',
                     get_template_directory_uri() . '/assets/js/customize-controls.js',
                     ['jquery', 'customize-controls', 'media-views'],
-                    '1.0.6',
+                    '1.0.7',
                     true
                 );
                 wp_add_inline_style( 'customize-controls', '
@@ -326,14 +326,16 @@ function hair_render_gallery( $setting_key ) {
         if ( $mime && strpos( $mime, 'video' ) === 0 ) {
             $url = wp_get_attachment_url( $id );
             if ( ! $url ) continue;
-            echo '<div class="car-slide car-slide-video">';
-            echo '<video src="' . esc_url( $url ) . '" muted playsinline loop preload="none"></video>';
-            echo '<div class="car-play-icon">&#9654;</div>';
+            echo '<div class="car-slide car-slide-video" data-video="' . esc_url( $url ) . '">';
+            echo '<video src="' . esc_url( $url ) . '" muted playsinline loop autoplay preload="metadata"></video>';
             echo '</div>';
         } else {
-            $src = wp_get_attachment_image_src( $id, 'medium_large' );
+            $src  = wp_get_attachment_image_src( $id, 'medium_large' );
+            $full = wp_get_attachment_image_src( $id, 'full' );
             if ( ! $src ) continue;
-            echo '<div class="car-slide"><img src="' . esc_url( $src[0] ) . '" alt="" loading="lazy"></div>';
+            echo '<div class="car-slide" data-full="' . esc_url( $full[0] ) . '">';
+            echo '<img src="' . esc_url( $src[0] ) . '" alt="" loading="lazy">';
+            echo '</div>';
         }
     }
 }

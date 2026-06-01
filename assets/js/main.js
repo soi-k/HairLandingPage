@@ -24,16 +24,59 @@ if (hamburger && navMenu) {
   });
 }
 
+/* ========== LIGHTBOX ========== */
+const lb = document.createElement('div');
+lb.id = 'car-lightbox';
+lb.innerHTML = `
+  <div class="lb-backdrop"></div>
+  <button class="lb-close" aria-label="Zamknij">&#10005;</button>
+  <div class="lb-content"></div>
+`;
+document.body.appendChild(lb);
+
+let lbOpenCallbacks = [];
+
+function lbOpen(html) {
+  lb.querySelector('.lb-content').innerHTML = html;
+  lb.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  const vid = lb.querySelector('video');
+  if (vid) { vid.muted = false; vid.play(); }
+  lbOpenCallbacks.forEach(fn => fn());
+}
+
+function lbClose() {
+  const vid = lb.querySelector('video');
+  if (vid) vid.pause();
+  lb.classList.remove('active');
+  lb.querySelector('.lb-content').innerHTML = '';
+  document.body.style.overflow = '';
+}
+
+lb.querySelector('.lb-backdrop').addEventListener('click', lbClose);
+lb.querySelector('.lb-close').addEventListener('click', lbClose);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') lbClose(); });
+
 /* ========== HAIR TYPE CAROUSELS ========== */
 (function () {
-  const GAP     = 12;   // must match CSS gap on .car-track
-  const DUR     = 520;  // transition ms
-  const AUTO_MS = 3500; // autoplay interval ms
+  const GAP     = 12;    // must match CSS gap on .car-track
+  const DUR     = 520;   // transition ms
+  const AUTO_MS = 10000; // autoplay interval ms
 
   function visCount() {
     if (window.innerWidth <= 480) return 2;
     if (window.innerWidth <= 768) return 3;
     return 5;
+  }
+
+  function playVisibleVideos(track, pos, V) {
+    track.querySelectorAll('.car-slide').forEach((s, i) => {
+      const vid = s.querySelector('video');
+      if (!vid) return;
+      const inView = i >= pos && i < pos + V;
+      if (inView && vid.paused) vid.play().catch(() => {});
+      if (!inView && !vid.paused) vid.pause();
+    });
   }
 
   function initCarousel(el) {
@@ -48,11 +91,20 @@ if (hamburger && navMenu) {
     const V    = visCount();
     if (!N) return;
 
-    let pos  = V;
-    let busy = false;
+    let pos   = V;
+    let busy  = false;
     let timer = null;
+    let lbOpen = false;
 
-    // Prepend clones of last V slides (reversed so order stays correct)
+    lbOpenCallbacks.push(() => { lbOpen = true;  autoStop(); });
+
+    lb.querySelector('.lb-backdrop').addEventListener('click', () => { lbOpen = false; autoStart(); });
+    lb.querySelector('.lb-close').addEventListener('click',    () => { lbOpen = false; autoStart(); });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && lbOpen) { lbOpen = false; autoStart(); }
+    });
+
+    // Prepend clones of last V slides
     real.slice(-V).reverse().forEach(s => {
       const c = s.cloneNode(true);
       c.setAttribute('aria-hidden', 'true');
@@ -80,11 +132,12 @@ if (hamburger && navMenu) {
       pos = p;
       if (!animate) {
         track.style.transition = 'none';
-        void track.offsetHeight; // flush transition before transform
+        void track.offsetHeight;
       } else {
         track.style.transition = `transform ${DUR}ms cubic-bezier(0.25,0.46,0.45,0.94)`;
       }
       track.style.transform = `translateX(-${pos * slideStep()}px)`;
+      playVisibleVideos(track, pos, V);
     }
 
     function move(dir) {
@@ -95,13 +148,13 @@ if (hamburger && navMenu) {
       track.style.transition = `transform ${DUR}ms cubic-bezier(0.25,0.46,0.45,0.94)`;
       track.style.transform  = `translateX(-${next * slideStep()}px)`;
       setTimeout(() => {
-        if (next < V)          setPos(N + next,  false); // wrap forward
-        else if (next >= N + V) setPos(next - N,  false); // wrap back
+        if (next < V)           setPos(N + next, false);
+        else if (next >= N + V) setPos(next - N, false);
         busy = false;
       }, DUR + 40);
     }
 
-    function autoStart() { timer = setInterval(() => move(1), AUTO_MS); }
+    function autoStart() { if (!lbOpen) timer = setInterval(() => move(1), AUTO_MS); }
     function autoStop()  { clearInterval(timer); }
 
     layout();
@@ -110,13 +163,28 @@ if (hamburger && navMenu) {
     prevB?.addEventListener('click', () => { autoStop(); move(-1); autoStart(); });
     nextB?.addEventListener('click', () => { autoStop(); move(1);  autoStart(); });
     el.addEventListener('mouseenter', autoStop);
-    el.addEventListener('mouseleave', autoStart);
+    el.addEventListener('mouseleave', () => { if (!lbOpen) autoStart(); });
 
     autoStart();
   }
 
   document.querySelectorAll('[data-carousel]').forEach(initCarousel);
 })();
+
+/* ========== CAROUSEL CLICK → LIGHTBOX ========== */
+document.addEventListener('click', function (e) {
+  const slide = e.target.closest('.car-slide');
+  if (!slide || slide.getAttribute('aria-hidden')) return;
+
+  const videoUrl = slide.dataset.video;
+  const fullUrl  = slide.dataset.full;
+
+  if (videoUrl) {
+    lbOpen(`<video src="${videoUrl}" controls autoplay playsinline style="max-width:100%;max-height:85vh;border-radius:8px;"></video>`);
+  } else if (fullUrl) {
+    lbOpen(`<img src="${fullUrl}" alt="" style="max-width:100%;max-height:85vh;border-radius:8px;object-fit:contain;">`);
+  }
+});
 
 /* ========== PRICE CALCULATOR ========== */
 const basePrices = {
@@ -199,20 +267,6 @@ if (form) {
   });
 }
 
-/* ========== VIDEO SLIDES (play / pause on click) ========== */
-document.addEventListener('click', function (e) {
-  const slide = e.target.closest('.car-slide-video');
-  if (!slide) return;
-  const video = slide.querySelector('video');
-  if (!video) return;
-  if (video.paused) {
-    video.play();
-    slide.classList.add('playing');
-  } else {
-    video.pause();
-    slide.classList.remove('playing');
-  }
-});
 
 /* ========== SCROLL REVEAL ========== */
 const revealEls = document.querySelectorAll('.reveal');
