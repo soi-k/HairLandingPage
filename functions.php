@@ -29,14 +29,14 @@ function hair_enqueue_assets() {
         'hair-main',
         get_template_directory_uri() . '/assets/css/main.css',
         ['google-fonts'],
-        '1.0.8'
+        '1.0.9'
     );
 
     wp_enqueue_script(
         'hair-main',
         get_template_directory_uri() . '/assets/js/main.js',
         [],
-        '1.0.8',
+        '1.0.9',
         true
     );
 }
@@ -64,7 +64,7 @@ function hair_customizer_register( $wp_customize ) {
                     'hair-gallery-ctrl',
                     get_template_directory_uri() . '/assets/js/customize-controls.js',
                     ['jquery', 'customize-controls', 'media-views'],
-                    '1.0.8',
+                    '1.0.9',
                     true
                 );
                 wp_add_inline_style( 'customize-controls', '

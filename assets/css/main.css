@@ -572,123 +572,6 @@ section { padding: 80px 0; }
 .car-slide-video:hover .car-play-icon { background: rgba(0,0,0,0.48); }
 .car-slide-video.playing .car-play-icon { opacity: 0; }
 
-/* =============================================
-   PRICE CALCULATOR (#calculator)
-   ============================================= */
-.calculator {
-  background: var(--cream);
-}
-
-.calc-box {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 40px;
-  max-width: 740px;
-  margin: 0 auto;
-  box-shadow: var(--shadow);
-}
-
-.calc-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-
-.calc-group {
-  margin-bottom: 0;
-}
-
-.calc-group label {
-  display: block;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--text-2);
-  margin-bottom: 8px;
-}
-
-.calc-group select,
-.calc-group input {
-  width: 100%;
-  padding: 12px 16px;
-  background: var(--cream);
-  border: 1px solid var(--cream-3);
-  border-radius: var(--radius);
-  color: var(--text);
-  font-family: var(--font-body);
-  font-size: 15px;
-  outline: none;
-  transition: border-color var(--transition);
-  appearance: none;
-}
-
-.calc-group select:focus,
-.calc-group input:focus {
-  border-color: var(--gold);
-}
-
-.select-wrap {
-  position: relative;
-}
-
-.select-wrap::after {
-  content: '▾';
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-2);
-  pointer-events: none;
-  font-size: 12px;
-}
-
-.calc-result {
-  margin-top: 24px;
-  padding: 20px 24px;
-  background: var(--cream);
-  border: 1px solid var(--border-gold);
-  border-left: 3px solid var(--gold);
-  border-radius: var(--radius);
-  display: none;
-}
-
-.calc-result.show { display: block; }
-
-.calc-result p {
-  font-size: 13px;
-  color: var(--text-2);
-  margin-bottom: 4px;
-}
-
-.calc-result .price {
-  font-family: var(--font-disp);
-  font-size: 32px;
-  font-weight: 700;
-  color: var(--gold);
-  line-height: 1;
-}
-
-.calc-result .price-note {
-  font-size: 12px;
-  color: var(--text-3);
-  margin-top: 6px;
-  font-style: italic;
-}
-
-.calc-btn-row {
-  margin-top: 20px;
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.calc-note {
-  font-size: 12px;
-  color: var(--text-3);
-  font-style: italic;
-}
 
 /* =============================================
    CO WPŁYWA NA WYCENĘ
@@ -1222,9 +1105,6 @@ section { padding: 80px 0; }
 
   .about-image-wrap { order: -1; }
 
-  .calc-grid { grid-template-columns: 1fr; }
-  .calc-box { padding: 24px; }
-
   .factors-grid { flex-direction: column; }
   .factor-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
   .factor-item:last-child { border-bottom: none; }
@@ -1251,7 +1131,6 @@ section { padding: 80px 0; }
   .hero-buttons { flex-direction: column; align-items: flex-start; }
   .btn { width: 100%; justify-content: center; }
   .about-stats { flex-direction: column; gap: 16px; }
-  .calc-btn-row { flex-direction: column; align-items: stretch; }
 }
 
 /* =============================================

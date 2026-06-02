@@ -185,63 +185,6 @@ document.addEventListener('click', function (e) {
   }
 });
 
-/* ========== PRICE CALCULATOR ========== */
-const basePrices = {
-  wietnam: 42,
-  indie:   36,
-  chiny:   28,
-  iran:    38,
-  turcja:  44,
-  birma:   34,
-};
-
-const lengthMult = {
-  20: 1.00,
-  30: 1.20,
-  40: 1.42,
-  50: 1.68,
-  60: 2.00,
-  70: 2.40,
-};
-
-function calculatePrice() {
-  const hairType = document.getElementById('calc-type')?.value;
-  const length   = document.getElementById('calc-length')?.value;
-  const weight   = parseFloat(document.getElementById('calc-weight')?.value || 0);
-  const result   = document.getElementById('calc-result');
-
-  if (!hairType || !length || !weight || weight <= 0) {
-    if (result) result.classList.remove('show');
-    return;
-  }
-
-  const base = basePrices[hairType] || 35;
-  const mult = lengthMult[length]  || 1.0;
-  const loss = 0.15; // 15% processing loss
-  const pricePerKg   = base * mult;
-  const totalNet     = pricePerKg * weight;
-  const totalGross   = totalNet * 1.23; // VAT 23%
-
-  if (result) {
-    document.getElementById('calc-price-net').textContent =
-      totalNet.toFixed(2).replace('.', ',') + ' PLN';
-    document.getElementById('calc-price-gross').textContent =
-      '≈ ' + totalGross.toFixed(2).replace('.', ',') + ' PLN brutto';
-    document.getElementById('calc-loss').textContent =
-      'Uwaga: szacunkowy ubytek przy farbowaniu ~15% (ok. ' +
-      (weight * loss).toFixed(2).replace('.', ',') + ' kg)';
-    result.classList.add('show');
-  }
-}
-
-document.getElementById('calc-type')  ?.addEventListener('change', calculatePrice);
-document.getElementById('calc-length') ?.addEventListener('change', calculatePrice);
-document.getElementById('calc-weight') ?.addEventListener('input',  calculatePrice);
-
-document.getElementById('calc-btn')?.addEventListener('click', (e) => {
-  e.preventDefault();
-  calculatePrice();
-});
 
 /* ========== CONTACT FORM ========== */
 const form = document.getElementById('contactForm');

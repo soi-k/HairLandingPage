@@ -21,10 +21,13 @@
       <ul class="nav-menu" id="navMenu">
         <li><a href="#about">O Fabryce</a></li>
         <li><a href="#hair-types">Rodzaje Włosów</a></li>
-        <li><a href="#calculator">Kalkulator</a></li>
         <li><a href="#why">Dlaczego My</a></li>
         <li><a href="#contact">Kontakt</a></li>
-        <li><a href="#calculator" class="nav-cta">Oblicz cenę</a></li>
+        <?php
+        $nav_btn_url  = hair_mod('hero_btn1_url','') ?: '#about';
+        $nav_btn_text = hair_mod('hero_btn1','Aktualności');
+        ?>
+        <li><a href="<?php echo esc_url($nav_btn_url); ?>" class="nav-cta"><?php echo esc_html($nav_btn_text); ?></a></li>
       </ul>
 
       <button class="hamburger" id="hamburger" aria-label="Menu">

@@ -15,7 +15,7 @@ $hero_bg = hair_mod('hero_bg', 'https://hairevolution.pl/wp-content/uploads/2026
       <div class="hero-buttons">
         <?php
         $btn1_url = hair_mod('hero_btn1_url','');
-        $btn1_url = $btn1_url ?: '#calculator';
+        $btn1_url = $btn1_url ?: '#about';
         ?>
         <a href="<?php echo esc_url($btn1_url); ?>" class="btn btn-gold"><?php echo esc_html(hair_mod('hero_btn1','Aktualności')); ?></a>
         <a href="#about" class="btn btn-outline-light"><?php echo esc_html(hair_mod('hero_btn2','O Fabryce')); ?></a>
@@ -129,75 +129,6 @@ $hero_bg = hair_mod('hero_bg', 'https://hairevolution.pl/wp-content/uploads/2026
   </div>
 </section>
 
-<!-- PRICE CALCULATOR -->
-<section class="calculator" id="calculator">
-  <div class="container">
-    <div class="reveal" style="text-align:center; margin-bottom:36px;">
-      <span class="section-tag">Kalkulator ceny</span>
-      <h2 class="section-title">
-        Oblicz <span class="italic-gold">orientacyjną cenę</span>
-      </h2>
-      <p class="section-desc" style="margin:0 auto;">Podaj parametry zamówienia, aby uzyskać szacunkową wycenę. Minimalne zamówienie: 1 kg.</p>
-    </div>
-
-    <div class="calc-box reveal reveal-d2">
-      <div class="calc-grid">
-        <div class="calc-group">
-          <label for="calc-type">Rodzaj włosów</label>
-          <div class="select-wrap">
-            <select id="calc-type">
-              <option value="">— wybierz —</option>
-              <option value="wietnam">🇻🇳 Wietnam – Silky Straight</option>
-              <option value="indie">🇮🇳 Indie – Fine Texture</option>
-              <option value="chiny">🇨🇳 Chiny – Strong Straight</option>
-              <option value="iran">🇮🇷 Iran – Power Curl</option>
-              <option value="turcja">🇹🇷 Turcja – Dense Wave</option>
-              <option value="birma">🇲🇲 Birma – Natural Straight</option>
-            </select>
-          </div>
-        </div>
-        <div class="calc-group">
-          <label for="calc-length">Długość pasm</label>
-          <div class="select-wrap">
-            <select id="calc-length">
-              <option value="">— wybierz —</option>
-              <option value="20">20 cm</option>
-              <option value="30">30 cm</option>
-              <option value="40">40 cm</option>
-              <option value="50">50 cm</option>
-              <option value="60">60 cm</option>
-              <option value="70">70 cm+</option>
-            </select>
-          </div>
-        </div>
-        <div class="calc-group">
-          <label for="calc-weight">Waga zamówienia (kg)</label>
-          <input type="number" id="calc-weight" min="1" step="0.5" placeholder="np. 5">
-        </div>
-        <div class="calc-group">
-          <label>Minimalne zamówienie</label>
-          <input type="text" value="1 kg / pozycja" readonly style="color:var(--text-3); cursor:default;">
-        </div>
-      </div>
-
-      <div class="calc-result" id="calc-result">
-        <p>Szacunkowa cena netto:</p>
-        <div class="price" id="calc-price-net">—</div>
-        <div class="price-note" id="calc-price-gross"></div>
-        <div class="price-note" id="calc-loss" style="margin-top:8px; color:var(--text-2);"></div>
-      </div>
-
-      <div class="calc-btn-row">
-        <button class="btn btn-gold" id="calc-btn">Oblicz cenę</button>
-        <span class="calc-note">* Cena orientacyjna netto. Ostateczna oferta po kontakcie z naszym zespołem.</span>
-      </div>
-
-      <p style="margin-top:16px; font-size:12px; color:var(--text-3); font-style:italic;">
-        Przemysłowy proces farbowania wiąże się z ubytkiem masy włosów na poziomie ok. 15%.
-      </p>
-    </div>
-  </div>
-</section>
 
 <!-- CO WPŁYWA NA WYCENĘ -->
 <section class="factors">
