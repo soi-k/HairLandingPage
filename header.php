@@ -19,10 +19,10 @@
       </a>
 
       <ul class="nav-menu" id="navMenu">
-        <li><a href="#about">O Fabryce</a></li>
-        <li><a href="#hair-types">Rodzaje Włosów</a></li>
-        <li><a href="#why">Dlaczego My</a></li>
-        <li><a href="#contact">Kontakt</a></li>
+        <li><a href="<?php echo esc_url(home_url('/#about')); ?>">O Fabryce</a></li>
+        <li><a href="<?php echo esc_url(home_url('/#hair-types')); ?>">Rodzaje Włosów</a></li>
+        <li><a href="<?php echo esc_url(home_url('/#why')); ?>">Dlaczego My</a></li>
+        <li><a href="<?php echo esc_url(home_url('/#contact')); ?>">Kontakt</a></li>
         <?php
         $nav_btn_url  = hair_mod('hero_btn1_url','') ?: '#about';
         $nav_btn_text = hair_mod('hero_btn1','Aktualności');
