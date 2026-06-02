@@ -13,7 +13,11 @@ $hero_bg = hair_mod('hero_bg', 'https://hairevolution.pl/wp-content/uploads/2026
       <h1><?php echo esc_html(hair_mod('hero_title','Hair Evolution')); ?><em><?php echo esc_html(hair_mod('hero_subtitle','Factory')); ?></em></h1>
       <p class="hero-sub"><?php echo esc_html(hair_mod('hero_desc','Fabryka przemysłowego farbowania włosów naturalnych. Współpracujemy wyłącznie w modelu B2B.')); ?></p>
       <div class="hero-buttons">
-        <a href="#calculator" class="btn btn-gold"><?php echo esc_html(hair_mod('hero_btn1','Oblicz cenę')); ?></a>
+        <?php
+        $btn1_url = hair_mod('hero_btn1_url','');
+        $btn1_url = $btn1_url ?: '#calculator';
+        ?>
+        <a href="<?php echo esc_url($btn1_url); ?>" class="btn btn-gold"><?php echo esc_html(hair_mod('hero_btn1','Aktualności')); ?></a>
         <a href="#about" class="btn btn-outline-light"><?php echo esc_html(hair_mod('hero_btn2','O Fabryce')); ?></a>
       </div>
     </div>

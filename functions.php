@@ -29,14 +29,14 @@ function hair_enqueue_assets() {
         'hair-main',
         get_template_directory_uri() . '/assets/css/main.css',
         ['google-fonts'],
-        '1.0.7'
+        '1.0.8'
     );
 
     wp_enqueue_script(
         'hair-main',
         get_template_directory_uri() . '/assets/js/main.js',
         [],
-        '1.0.7',
+        '1.0.8',
         true
     );
 }
@@ -64,7 +64,7 @@ function hair_customizer_register( $wp_customize ) {
                     'hair-gallery-ctrl',
                     get_template_directory_uri() . '/assets/js/customize-controls.js',
                     ['jquery', 'customize-controls', 'media-views'],
-                    '1.0.7',
+                    '1.0.8',
                     true
                 );
                 wp_add_inline_style( 'customize-controls', '
@@ -149,7 +149,7 @@ function hair_customizer_register( $wp_customize ) {
         'hero_title'    => ['Title (line 1)',             'Hair Evolution'],
         'hero_subtitle' => ['Title (line 2 – gold italic)', 'Factory'],
         'hero_desc'     => ['Description text',           'Fabryka przemysłowego farbowania włosów naturalnych. Współpracujemy wyłącznie w modelu B2B.'],
-        'hero_btn1'     => ['Button 1 label',             'Oblicz cenę'],
+        'hero_btn1'     => ['Button 1 label',             'Aktualności'],
         'hero_btn2'     => ['Button 2 label',             'O Fabryce'],
     ];
 
@@ -164,6 +164,16 @@ function hair_customizer_register( $wp_customize ) {
             'type'    => 'text',
         ]);
     }
+
+    $wp_customize->add_setting( 'hair_hero_btn1_url', [
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ]);
+    $wp_customize->add_control( 'hair_hero_btn1_url', [
+        'label'       => 'Button 1 URL (puste = link do #calculator)',
+        'section'     => 'hair_hero',
+        'type'        => 'url',
+    ]);
 
     // ── SECTION: About ────────────────────────
     $wp_customize->add_section('hair_about', [
