@@ -2,8 +2,8 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <div class="footer-brand-name">Hair Evolution <em>Factory</em></div>
-          <p>Nowoczesna fabryka przemysłowego farbowania włosów naturalnych. Wrocław, Polska. Wyłącznie model B2B.</p>
+          <div class="footer-brand-name"><?php echo esc_html(hair_mod('footer_brand','Hair Evolution')); ?> <em><?php echo esc_html(hair_mod('footer_brand_italic','Factory')); ?></em></div>
+          <p><?php echo esc_html(hair_mod('footer_desc','Nowoczesna fabryka przemysłowego farbowania włosów naturalnych. Wrocław, Polska. Wyłącznie model B2B.')); ?></p>
         </div>
         <div class="footer-col">
           <h4>O Fabryce</h4>

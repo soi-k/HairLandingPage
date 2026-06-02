@@ -29,14 +29,14 @@ function hair_enqueue_assets() {
         'hair-main',
         get_template_directory_uri() . '/assets/css/main.css',
         ['google-fonts'],
-        '1.0.9'
+        '1.1.0'
     );
 
     wp_enqueue_script(
         'hair-main',
         get_template_directory_uri() . '/assets/js/main.js',
         [],
-        '1.0.9',
+        '1.1.0',
         true
     );
 }
@@ -64,7 +64,7 @@ function hair_customizer_register( $wp_customize ) {
                     'hair-gallery-ctrl',
                     get_template_directory_uri() . '/assets/js/customize-controls.js',
                     ['jquery', 'customize-controls', 'media-views'],
-                    '1.0.9',
+                    '1.1.0',
                     true
                 );
                 wp_add_inline_style( 'customize-controls', '
@@ -111,208 +111,258 @@ function hair_customizer_register( $wp_customize ) {
         }
     }
 
-    // ── PANEL główny ──────────────────────────
+    // ── PANEL chính ────────────────────────────
     $wp_customize->add_panel('hair_panel', [
-        'title'    => '🎨 Ustawienia strony',
+        'title'    => '🎨 Cài đặt trang web',
         'priority' => 30,
     ]);
 
-    // ── SECTION: Images ───────────────────────
+    // ── SECTION: Logo & Thương hiệu ─────────────
+    $wp_customize->add_section('hair_general', [
+        'title' => '🏷️ Logo & Thương hiệu',
+        'panel' => 'hair_panel',
+    ]);
+    foreach ([
+        'logo_name'   => ['Tên logo - dòng 1',              'Hair Evolution'],
+        'logo_italic' => ['Tên logo - dòng 2 (in nghiêng)', 'Factory'],
+    ] as $key => $data) {
+        $wp_customize->add_setting("hair_{$key}", ['default' => $data[1], 'sanitize_callback' => 'sanitize_text_field']);
+        $wp_customize->add_control("hair_{$key}", ['label' => $data[0], 'section' => 'hair_general', 'type' => 'text']);
+    }
+
+    // ── SECTION: Hình ảnh ───────────────────────
     $wp_customize->add_section('hair_images', [
-        'title' => '📷 Images',
+        'title' => '🖼️ Hình ảnh',
         'panel' => 'hair_panel',
     ]);
-
-    $images = [
-        'hero_bg'    => ['Hero background image (dark photo)',  'https://hairevolution.pl/wp-content/uploads/2026/03/przedluzgym-20-of-215-scaled.jpg'],
-        'about_img'  => ['About section photo',                 'https://hairevolution.pl/wp-content/uploads/2026/03/przedluzgym-20-of-215-scaled.jpg'],
-    ];
-
-    foreach ( $images as $key => $data ) {
-        $wp_customize->add_setting( "hair_{$key}", [
-            'default'           => $data[1],
-            'sanitize_callback' => 'esc_url_raw',
-        ]);
-        $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, "hair_{$key}", [
-            'label'   => $data[0],
-            'section' => 'hair_images',
-        ]));
+    foreach ([
+        'hero_bg'   => ['Ảnh nền Hero (ảnh tối)', 'https://hairevolution.pl/wp-content/uploads/2026/03/przedluzgym-20-of-215-scaled.jpg'],
+        'about_img' => ['Ảnh section Giới thiệu',  'https://hairevolution.pl/wp-content/uploads/2026/03/przedluzgym-20-of-215-scaled.jpg'],
+    ] as $key => $data) {
+        $wp_customize->add_setting("hair_{$key}", ['default' => $data[1], 'sanitize_callback' => 'esc_url_raw']);
+        $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, "hair_{$key}", ['label' => $data[0], 'section' => 'hair_images']));
     }
 
-    // ── SECTION: Hero ─────────────────────────
+    // ── SECTION: Hero ───────────────────────────
     $wp_customize->add_section('hair_hero', [
-        'title' => '🦸 Hero Section',
+        'title' => '🦸 Hero - Banner đầu trang',
         'panel' => 'hair_panel',
     ]);
-
-    $hero_fields = [
-        'hero_title'    => ['Title (line 1)',             'Hair Evolution'],
-        'hero_subtitle' => ['Title (line 2 – gold italic)', 'Factory'],
-        'hero_desc'     => ['Description text',           'Fabryka przemysłowego farbowania włosów naturalnych. Współpracujemy wyłącznie w modelu B2B.'],
-        'hero_btn1'     => ['Button 1 label',             'Aktualności'],
-        'hero_btn2'     => ['Button 2 label',             'O Fabryce'],
-    ];
-
-    foreach ( $hero_fields as $key => $data ) {
-        $wp_customize->add_setting( "hair_{$key}", [
-            'default'           => $data[1],
-            'sanitize_callback' => 'sanitize_text_field',
-        ]);
-        $wp_customize->add_control( "hair_{$key}", [
-            'label'   => $data[0],
-            'section' => 'hair_hero',
-            'type'    => 'text',
-        ]);
+    foreach ([
+        'hero_location' => ['Địa điểm hiển thị',             'Wrocław, Polska'],
+        'hero_title'    => ['Tiêu đề dòng 1',                 'Hair Evolution'],
+        'hero_subtitle' => ['Tiêu đề dòng 2 (vàng nghiêng)', 'Factory'],
+        'hero_desc'     => ['Mô tả',                          'Fabryka przemysłowego farbowania włosów naturalnych. Współpracujemy wyłącznie w modelu B2B.'],
+        'hero_btn1'     => ['Nút 1 - chữ',                   'Aktualności'],
+        'hero_btn2'     => ['Nút 2 - chữ',                   'O Fabryce'],
+    ] as $key => $data) {
+        $type = ($key === 'hero_desc') ? 'textarea' : 'text';
+        $wp_customize->add_setting("hair_{$key}", ['default' => $data[1], 'sanitize_callback' => $type === 'textarea' ? 'sanitize_textarea_field' : 'sanitize_text_field']);
+        $wp_customize->add_control("hair_{$key}", ['label' => $data[0], 'section' => 'hair_hero', 'type' => $type]);
     }
+    $wp_customize->add_setting('hair_hero_btn1_url', ['default' => '', 'sanitize_callback' => 'esc_url_raw']);
+    $wp_customize->add_control('hair_hero_btn1_url', ['label' => 'Nút 1 - đường dẫn URL (để trống = cuộn xuống #about)', 'section' => 'hair_hero', 'type' => 'url']);
 
-    $wp_customize->add_setting( 'hair_hero_btn1_url', [
-        'default'           => '',
-        'sanitize_callback' => 'esc_url_raw',
-    ]);
-    $wp_customize->add_control( 'hair_hero_btn1_url', [
-        'label'       => 'Button 1 URL (puste = link do #calculator)',
-        'section'     => 'hair_hero',
-        'type'        => 'url',
-    ]);
-
-    // ── SECTION: About ────────────────────────
+    // ── SECTION: Giới thiệu ─────────────────────
     $wp_customize->add_section('hair_about', [
-        'title' => '🏭 About Section',
+        'title' => '🏭 Giới thiệu - About',
         'panel' => 'hair_panel',
     ]);
-
-    $about_fields = [
-        'about_title' => ['Section heading',       'Nowoczesna fabryka'],
-        'about_gold'  => ['Gold italic subheading', 'farbowania włosów'],
-        'about_p1'    => ['Paragraph 1',            'Hair Evolution Factory to nowoczesna fabryka przemysłowego farbowania włosów naturalnych zlokalizowana we Wrocławiu.'],
-        'about_p2'    => ['Paragraph 2',            'Dzięki skali produkcji przemysłowej jesteśmy w stanie oferować stabilną jakość, powtarzalność koloru oraz konkurencyjne ceny.'],
-        'about_years' => ['Years of experience',    '10+'],
-    ];
-
-    foreach ( $about_fields as $key => $data ) {
-        $type = in_array( $key, ['about_p1', 'about_p2'] ) ? 'textarea' : 'text';
-        $wp_customize->add_setting( "hair_{$key}", [
-            'default'           => $data[1],
-            'sanitize_callback' => $type === 'textarea' ? 'sanitize_textarea_field' : 'sanitize_text_field',
-        ]);
-        $wp_customize->add_control( "hair_{$key}", [
-            'label'   => $data[0],
-            'section' => 'hair_about',
-            'type'    => $type,
-        ]);
+    foreach ([
+        'about_tag'        => ['text', 'Tag nhỏ phía trên',                    'O Fabryce'],
+        'about_title'      => ['text', 'Tiêu đề dòng 1',                       'Nowoczesna fabryka'],
+        'about_gold'       => ['text', 'Tiêu đề dòng 2 (vàng nghiêng)',        'farbowania włosów'],
+        'about_p1'         => ['textarea', 'Đoạn văn 1',                       'Hair Evolution Factory to nowoczesna fabryka przemysłowego farbowania włosów naturalnych zlokalizowana we Wrocławiu.'],
+        'about_p2'         => ['textarea', 'Đoạn văn 2',                       'Dzięki skali produkcji przemysłowej jesteśmy w stanie oferować stabilną jakość, powtarzalność koloru oraz konkurencyjne ceny.'],
+        'about_stat1_title'=> ['text', 'Thống kê 1 - tiêu đề',                 'Własna fabryka'],
+        'about_stat1_sub'  => ['text', 'Thống kê 1 - phụ đề',                  'Bez pośredników'],
+        'about_stat2_title'=> ['text', 'Thống kê 2 - tiêu đề',                 'Eksport'],
+        'about_stat2_sub'  => ['text', 'Thống kê 2 - phụ đề',                  'Cała Europa'],
+        'about_stat3_title'=> ['text', 'Thống kê 3 - tiêu đề',                 'B2B Only'],
+        'about_stat3_sub'  => ['text', 'Thống kê 3 - phụ đề',                  'Wyłącznie hurtowo'],
+    ] as $key => $data) {
+        $wp_customize->add_setting("hair_{$key}", ['default' => $data[2], 'sanitize_callback' => $data[0] === 'textarea' ? 'sanitize_textarea_field' : 'sanitize_text_field']);
+        $wp_customize->add_control("hair_{$key}", ['label' => $data[1], 'section' => 'hair_about', 'type' => $data[0]]);
     }
 
-    // ── SECTION: Contact ──────────────────────
-    $wp_customize->add_section('hair_contact', [
-        'title' => '📞 Contact Details',
-        'panel' => 'hair_panel',
-    ]);
-
-    $contact_fields = [
-        'contact_city'  => ['City / Country',  'Wrocław, Polska'],
-        'contact_email' => ['Email address',   'kontakt@hairevolutionfactory.pl'],
-        'contact_phone' => ['Phone number',    '+48 573 568 410'],
-        'contact_hours' => ['Working hours',   'Pn–Pt: 8:00–17:00'],
-    ];
-
-    foreach ( $contact_fields as $key => $data ) {
-        $wp_customize->add_setting( "hair_{$key}", [
-            'default'           => $data[1],
-            'sanitize_callback' => 'sanitize_text_field',
-        ]);
-        $wp_customize->add_control( "hair_{$key}", [
-            'label'   => $data[0],
-            'section' => 'hair_contact',
-            'type'    => 'text',
-        ]);
-    }
-
-    foreach ( [
-        'contact_instagram' => 'Instagram URL (zostaw puste, aby ukryć)',
-        'contact_whatsapp'  => 'WhatsApp URL (np. https://wa.me/48573568410)',
-    ] as $key => $label ) {
-        $wp_customize->add_setting( "hair_{$key}", [
-            'default'           => '',
-            'sanitize_callback' => 'esc_url_raw',
-        ]);
-        $wp_customize->add_control( "hair_{$key}", [
-            'label'   => $label,
-            'section' => 'hair_contact',
-            'type'    => 'url',
-        ]);
-    }
-
-    // ── SECTION: Hair Types ───────────────────
+    // ── SECTION: Loại tóc ──────────────────────
     $wp_customize->add_section('hair_types', [
-        'title' => '💇 Hair Types',
+        'title' => '💇 Loại tóc - Hair Types',
         'panel' => 'hair_panel',
     ]);
-
+    foreach ([
+        'types_tag'   => ['Tag nhỏ phía trên',              'Rodzaje Włosów'],
+        'types_title' => ['Tiêu đề (phần thường)',           'Typy &'],
+        'types_gold'  => ['Tiêu đề (phần vàng nghiêng)',    'Charakterystyka'],
+        'types_desc'  => ['Mô tả section',                  'Oferujemy włosy naturalne w 4 głównych typach struktury — każdy o unikalnych właściwościach i zastosowaniach.'],
+    ] as $key => $data) {
+        $type = ($key === 'types_desc') ? 'textarea' : 'text';
+        $wp_customize->add_setting("hair_{$key}", ['default' => $data[1], 'sanitize_callback' => $type === 'textarea' ? 'sanitize_textarea_field' : 'sanitize_text_field']);
+        $wp_customize->add_control("hair_{$key}", ['label' => $data[0], 'section' => 'hair_types', 'type' => $type]);
+    }
     $box_defaults = [
         1 => ['Włosy Proste',  'Silky & Strong Straight', 'Naturalne włosy proste dostępne w kilku wariantach grubości włosiny. Idealne do farbowania i tworzenia gładkich, lśniących przedłużeń.'],
         2 => ['Lekka Fala',    'Fine & Natural Wave',     'Delikatna, naturalna fala nadająca fryzurze objętości. Doskonała do technik ombre, balayage oraz lekkich stylizacji.'],
         3 => ['Gęsta Fala',    'Dense Wave & Volume',     'Gęste, falowane pasma o bogatej strukturze. Popularne na rynkach europejskich i premium, idealne do objętościowych stylizacji.'],
         4 => ['Włosy Kręcone', 'Power Curl & Afro',       'Naturalne loki o wyjątkowej wytrzymałości i gęstości. Przeznaczone dla klientów poszukujących mocnych, trwałych fryzerek.'],
     ];
-
-    foreach ( $box_defaults as $n => $defaults ) {
-        $wp_customize->add_setting( "hair_box{$n}_title", [
-            'default'           => $defaults[0],
-            'sanitize_callback' => 'sanitize_text_field',
-        ]);
-        $wp_customize->add_control( "hair_box{$n}_title", [
-            'label'   => "Box {$n} – Title",
-            'section' => 'hair_types',
-            'type'    => 'text',
-        ]);
-
-        $wp_customize->add_setting( "hair_box{$n}_subtitle", [
-            'default'           => $defaults[1],
-            'sanitize_callback' => 'sanitize_text_field',
-        ]);
-        $wp_customize->add_control( "hair_box{$n}_subtitle", [
-            'label'   => "Box {$n} – Subtitle (gold italic)",
-            'section' => 'hair_types',
-            'type'    => 'text',
-        ]);
-
-        $wp_customize->add_setting( "hair_box{$n}_desc", [
-            'default'           => $defaults[2],
-            'sanitize_callback' => 'sanitize_textarea_field',
-        ]);
-        $wp_customize->add_control( "hair_box{$n}_desc", [
-            'label'   => "Box {$n} – Description",
-            'section' => 'hair_types',
-            'type'    => 'textarea',
-        ]);
-
-        $wp_customize->add_setting( "hair_box{$n}_gallery", [
-            'default'           => '',
-            'sanitize_callback' => 'hair_sanitize_gallery',
-        ]);
-        $wp_customize->add_control(
-            new Hair_Media_Gallery_Control( $wp_customize, "hair_box{$n}_gallery", [
-                'label'   => "Box {$n} – Photos & Videos",
-                'section' => 'hair_types',
-            ])
-        );
+    foreach ($box_defaults as $n => $defaults) {
+        $wp_customize->add_setting("hair_box{$n}_title",    ['default' => $defaults[0], 'sanitize_callback' => 'sanitize_text_field']);
+        $wp_customize->add_control("hair_box{$n}_title",    ['label' => "Loại {$n} - Tiêu đề", 'section' => 'hair_types', 'type' => 'text']);
+        $wp_customize->add_setting("hair_box{$n}_subtitle", ['default' => $defaults[1], 'sanitize_callback' => 'sanitize_text_field']);
+        $wp_customize->add_control("hair_box{$n}_subtitle", ['label' => "Loại {$n} - Phụ đề (vàng nghiêng)", 'section' => 'hair_types', 'type' => 'text']);
+        $wp_customize->add_setting("hair_box{$n}_desc",     ['default' => $defaults[2], 'sanitize_callback' => 'sanitize_textarea_field']);
+        $wp_customize->add_control("hair_box{$n}_desc",     ['label' => "Loại {$n} - Mô tả", 'section' => 'hair_types', 'type' => 'textarea']);
+        $wp_customize->add_setting("hair_box{$n}_gallery",  ['default' => '', 'sanitize_callback' => 'hair_sanitize_gallery']);
+        $wp_customize->add_control(new Hair_Media_Gallery_Control($wp_customize, "hair_box{$n}_gallery", ['label' => "Loại {$n} - Ảnh & Video", 'section' => 'hair_types']));
     }
 
-    // ── SECTION: Footer ───────────────────────
+    // ── SECTION: Yếu tố định giá ───────────────
+    $wp_customize->add_section('hair_factors', [
+        'title' => '💰 Yếu tố định giá',
+        'panel' => 'hair_panel',
+    ]);
+    foreach ([
+        'factors_tag'   => ['text',     'Tag nhỏ phía trên',             'Transparentna wycena'],
+        'factors_title' => ['text',     'Tiêu đề (phần thường)',          'Co wpływa'],
+        'factors_gold'  => ['text',     'Tiêu đề (phần vàng nghiêng)',   'na wycenę'],
+        'factors_desc'  => ['textarea', 'Mô tả section',                  'Każde zamówienie wyceniamy indywidualnie. Oto główne czynniki kształtujące cenę końcową.'],
+    ] as $key => $data) {
+        $wp_customize->add_setting("hair_{$key}", ['default' => $data[2], 'sanitize_callback' => $data[0] === 'textarea' ? 'sanitize_textarea_field' : 'sanitize_text_field']);
+        $wp_customize->add_control("hair_{$key}", ['label' => $data[1], 'section' => 'hair_factors', 'type' => $data[0]]);
+    }
+    $factor_defaults = [
+        1 => ['🌍', 'Pochodzenie włosów',  'Kraj i region pozyskania surowca'],
+        2 => ['🔬', 'Jakość surowca',       'Grubość włosiny i stopień przetworzenia'],
+        3 => ['📏', 'Długość pasm',          'Im dłuższe pasmo, tym wyższy koszt jednostkowy'],
+        4 => ['⚖️', 'Ilość (waga)',          'Większe zamówienia = niższa cena/kg'],
+        5 => ['🎨', 'Proces farbowania',    'Kolor docelowy, liczba etapów, technika'],
+    ];
+    foreach ($factor_defaults as $n => $d) {
+        $wp_customize->add_setting("hair_factor{$n}_icon",  ['default' => $d[0], 'sanitize_callback' => 'sanitize_text_field']);
+        $wp_customize->add_control("hair_factor{$n}_icon",  ['label' => "Yếu tố {$n} - icon (emoji)", 'section' => 'hair_factors', 'type' => 'text']);
+        $wp_customize->add_setting("hair_factor{$n}_title", ['default' => $d[1], 'sanitize_callback' => 'sanitize_text_field']);
+        $wp_customize->add_control("hair_factor{$n}_title", ['label' => "Yếu tố {$n} - tiêu đề", 'section' => 'hair_factors', 'type' => 'text']);
+        $wp_customize->add_setting("hair_factor{$n}_desc",  ['default' => $d[2], 'sanitize_callback' => 'sanitize_textarea_field']);
+        $wp_customize->add_control("hair_factor{$n}_desc",  ['label' => "Yếu tố {$n} - mô tả", 'section' => 'hair_factors', 'type' => 'textarea']);
+    }
+
+    // ── SECTION: Giá cả cạnh tranh ─────────────
+    $wp_customize->add_section('hair_pricing', [
+        'title' => '🏷️ Giá cả cạnh tranh',
+        'panel' => 'hair_panel',
+    ]);
+    foreach ([
+        'pricing_tag'   => ['Tag nhỏ phía trên',           'Nasza przewaga'],
+        'pricing_title' => ['Tiêu đề (phần thường)',        'Konkurencyjna cena'],
+        'pricing_gold'  => ['Tiêu đề (phần vàng nghiêng)', 'bez kompromisów'],
+    ] as $key => $data) {
+        $wp_customize->add_setting("hair_{$key}", ['default' => $data[1], 'sanitize_callback' => 'sanitize_text_field']);
+        $wp_customize->add_control("hair_{$key}", ['label' => $data[0], 'section' => 'hair_pricing', 'type' => 'text']);
+    }
+    $card_defaults = [
+        1 => ['🏭', 'Przemysłowa skala produkcji',       'Produkcja na skalę fabryczną pozwala nam obniżyć koszt jednostkowy o 30–50% w porównaniu z warsztatami rzemieślniczymi.'],
+        2 => ['🔗', 'Własna fabryka – brak pośredników', 'Jako właściciel fabryki jesteśmy pierwszym ogniwem łańcucha dostaw. Nie płacisz marży dystrybutora.'],
+        3 => ['📦', 'Bezpośredni zakup surowca',         'Pozyskujemy włosy bezpośrednio od dostawców w krajach pochodzenia, eliminując pośredników na każdym etapie.'],
+        4 => ['⚙️', 'Zoptymalizowany proces',            'Lata doświadczeń pozwoliły nam zoptymalizować każdy etap produkcji — od zamawiania surowca po pakowanie gotowych pasm.'],
+        5 => ['🎯', 'Stabilna powtarzalność koloru',     'Przemysłowe systemy mieszania barwników eliminują kosztowne błędy kolorystyczne.'],
+        6 => ['🤝', 'Indywidualne warunki B2B',          'Dla stałych partnerów oferujemy negocjowane ceny, wydłużone terminy płatności i priorytety produkcyjne.'],
+    ];
+    foreach ($card_defaults as $n => $d) {
+        $wp_customize->add_setting("hair_card{$n}_icon",  ['default' => $d[0], 'sanitize_callback' => 'sanitize_text_field']);
+        $wp_customize->add_control("hair_card{$n}_icon",  ['label' => "Thẻ {$n} - icon", 'section' => 'hair_pricing', 'type' => 'text']);
+        $wp_customize->add_setting("hair_card{$n}_title", ['default' => $d[1], 'sanitize_callback' => 'sanitize_text_field']);
+        $wp_customize->add_control("hair_card{$n}_title", ['label' => "Thẻ {$n} - tiêu đề", 'section' => 'hair_pricing', 'type' => 'text']);
+        $wp_customize->add_setting("hair_card{$n}_desc",  ['default' => $d[2], 'sanitize_callback' => 'sanitize_textarea_field']);
+        $wp_customize->add_control("hair_card{$n}_desc",  ['label' => "Thẻ {$n} - mô tả", 'section' => 'hair_pricing', 'type' => 'textarea']);
+    }
+
+    // ── SECTION: Tại sao chọn chúng tôi ────────
+    $wp_customize->add_section('hair_why', [
+        'title' => '✅ Tại sao chọn chúng tôi',
+        'panel' => 'hair_panel',
+    ]);
+    foreach ([
+        'why_tag'   => ['text',     'Tag nhỏ phía trên',             'Dlaczego My'],
+        'why_title' => ['text',     'Tiêu đề (phần thường)',          'Dlaczego'],
+        'why_gold'  => ['text',     'Tiêu đề (phần vàng nghiêng)',   'Hair Evolution Factory?'],
+        'why_desc'  => ['textarea', 'Mô tả',                          'Jesteśmy jedyną w Polsce fabryką specjalizującą się wyłącznie w przemysłowym farbowaniu włosów naturalnych na skalę hurtową.'],
+    ] as $key => $data) {
+        $wp_customize->add_setting("hair_{$key}", ['default' => $data[2], 'sanitize_callback' => $data[0] === 'textarea' ? 'sanitize_textarea_field' : 'sanitize_text_field']);
+        $wp_customize->add_control("hair_{$key}", ['label' => $data[1], 'section' => 'hair_why', 'type' => $data[0]]);
+    }
+    $why_defaults = [
+        1 => ['Doświadczenie i specjalizacja',      'Wieloletnie doświadczenie wyłącznie w segmencie hurtowego farbowania włosów naturalnych.'],
+        2 => ['Kontrola jakości na każdym etapie',  'Każda partia przechodzi wieloetapową kontrolę przed wysyłką.'],
+        3 => ['Stabilna powtarzalność koloru',       'Przemysłowe systemy dozowania barwników zapewniają identyczny kolor w każdej partii.'],
+        4 => ['Indywidualne zamówienia B2B',         'Realizujemy zamówienia szyte na miarę — niestandardowe kolory, własne opakowania (OEM).'],
+        5 => ['Różnorodność rodzajów włosów',        '6 różnych origins włosów w jednym miejscu — jeden kontakt, jedno zamówienie.'],
+    ];
+    foreach ($why_defaults as $n => $d) {
+        $wp_customize->add_setting("hair_why{$n}_title", ['default' => $d[0], 'sanitize_callback' => 'sanitize_text_field']);
+        $wp_customize->add_control("hair_why{$n}_title", ['label' => "Điểm mạnh {$n} - tiêu đề", 'section' => 'hair_why', 'type' => 'text']);
+        $wp_customize->add_setting("hair_why{$n}_desc",  ['default' => $d[1], 'sanitize_callback' => 'sanitize_textarea_field']);
+        $wp_customize->add_control("hair_why{$n}_desc",  ['label' => "Điểm mạnh {$n} - mô tả", 'section' => 'hair_why', 'type' => 'textarea']);
+    }
+
+    // ── SECTION: Thống kê số liệu ───────────────
+    $wp_customize->add_section('hair_stats', [
+        'title' => '📊 Thống kê số liệu',
+        'panel' => 'hair_panel',
+    ]);
+    $stat_defaults = [
+        1 => ['6',    'Rodzaje origins'],
+        2 => ['100%', 'Kontrola jakości'],
+        3 => ['±2',   'Tolerancja tonu koloru'],
+        4 => ['EU+',  'Eksport do Europy'],
+    ];
+    foreach ($stat_defaults as $n => $d) {
+        $wp_customize->add_setting("hair_stat{$n}_num",   ['default' => $d[0], 'sanitize_callback' => 'sanitize_text_field']);
+        $wp_customize->add_control("hair_stat{$n}_num",   ['label' => "Chỉ số {$n} - con số", 'section' => 'hair_stats', 'type' => 'text']);
+        $wp_customize->add_setting("hair_stat{$n}_label", ['default' => $d[1], 'sanitize_callback' => 'sanitize_text_field']);
+        $wp_customize->add_control("hair_stat{$n}_label", ['label' => "Chỉ số {$n} - nhãn", 'section' => 'hair_stats', 'type' => 'text']);
+    }
+
+    // ── SECTION: Liên hệ ───────────────────────
+    $wp_customize->add_section('hair_contact', [
+        'title' => '📞 Liên hệ - Contact',
+        'panel' => 'hair_panel',
+    ]);
+    foreach ([
+        'contact_tag'   => ['text',     'Tag nhỏ phía trên',             'Kontakt'],
+        'contact_title' => ['text',     'Tiêu đề (phần thường)',          'Formularz'],
+        'contact_gold'  => ['text',     'Tiêu đề (phần vàng nghiêng)',   'zapytania'],
+        'contact_desc'  => ['textarea', 'Mô tả',                          'Współpracujemy wyłącznie z firmami w modelu B2B. Wypełnij formularz, a skontaktujemy się z Tobą w ciągu 24 godzin roboczych.'],
+        'contact_city'  => ['text',     'Thành phố / Quốc gia',          'Wrocław, Polska'],
+        'contact_email' => ['text',     'Địa chỉ email',                  'kontakt@hairevolutionfactory.pl'],
+        'contact_phone' => ['text',     'Số điện thoại',                  '+48 573 568 410'],
+        'contact_hours' => ['text',     'Giờ làm việc',                   'Pn–Pt: 8:00–17:00'],
+    ] as $key => $data) {
+        $wp_customize->add_setting("hair_{$key}", ['default' => $data[2], 'sanitize_callback' => $data[0] === 'textarea' ? 'sanitize_textarea_field' : 'sanitize_text_field']);
+        $wp_customize->add_control("hair_{$key}", ['label' => $data[1], 'section' => 'hair_contact', 'type' => $data[0]]);
+    }
+    foreach ([
+        'contact_instagram' => 'URL Instagram (để trống để ẩn nút)',
+        'contact_whatsapp'  => 'URL WhatsApp (vd: https://wa.me/48573568410)',
+    ] as $key => $label) {
+        $wp_customize->add_setting("hair_{$key}", ['default' => '', 'sanitize_callback' => 'esc_url_raw']);
+        $wp_customize->add_control("hair_{$key}", ['label' => $label, 'section' => 'hair_contact', 'type' => 'url']);
+    }
+
+    // ── SECTION: Footer ────────────────────────
     $wp_customize->add_section('hair_footer', [
         'title' => '🦶 Footer',
         'panel' => 'hair_panel',
     ]);
+    foreach ([
+        'footer_brand'        => ['text',     'Tên thương hiệu dòng 1',            'Hair Evolution'],
+        'footer_brand_italic' => ['text',     'Tên thương hiệu dòng 2 (in nghiêng)', 'Factory'],
+        'footer_desc'         => ['textarea', 'Mô tả footer',                       'Nowoczesna fabryka przemysłowego farbowania włosów naturalnych. Wrocław, Polska. Wyłącznie model B2B.'],
+    ] as $key => $data) {
+        $wp_customize->add_setting("hair_{$key}", ['default' => $data[2], 'sanitize_callback' => $data[0] === 'textarea' ? 'sanitize_textarea_field' : 'sanitize_text_field']);
+        $wp_customize->add_control("hair_{$key}", ['label' => $data[1], 'section' => 'hair_footer', 'type' => $data[0]]);
+    }
 
-    $wp_customize->add_setting('hair_footer_desc', [
-        'default'           => 'Nowoczesna fabryka przemysłowego farbowania włosów naturalnych. Wrocław, Polska. Wyłącznie model B2B.',
-        'sanitize_callback' => 'sanitize_textarea_field',
-    ]);
-    $wp_customize->add_control('hair_footer_desc', [
-        'label'   => 'Footer description text',
-        'section' => 'hair_footer',
-        'type'    => 'textarea',
-    ]);
 }
 add_action('customize_register', 'hair_customizer_register');
 

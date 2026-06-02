@@ -15,7 +15,7 @@
   <div class="container">
     <div class="nav-inner">
       <a href="<?php echo esc_url(home_url('/')); ?>" class="nav-logo">
-        <span class="nav-logo-text">Hair Evolution <em>Factory</em></span>
+        <span class="nav-logo-text"><?php echo esc_html(hair_mod('logo_name','Hair Evolution')); ?> <em><?php echo esc_html(hair_mod('logo_italic','Factory')); ?></em></span>
       </a>
 
       <ul class="nav-menu" id="navMenu">
