@@ -506,8 +506,10 @@ section { padding: 80px 0; }
   }
   .car-slide img,
   .car-slide-video video {
-    object-fit: contain;
-    background: var(--cream-3);
+    object-fit: cover;
+  }
+  .car-slide {
+    background: none;
   }
 }
 
