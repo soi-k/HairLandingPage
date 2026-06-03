@@ -69,8 +69,8 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && isLbOpen) 
   const AUTO_MS = 10000; // autoplay interval ms
 
   function visCount() {
-    if (window.innerWidth <= 480) return 2;
-    if (window.innerWidth <= 768) return 3;
+    if (window.innerWidth <= 480) return 1;
+    if (window.innerWidth <= 768) return 2;
     return 5;
   }
 
