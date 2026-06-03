@@ -119,9 +119,13 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && isLbOpen) 
     }
 
     function layout() {
-      const w  = win.offsetWidth;
-      const sw = (w - GAP * (V - 1)) / V;
-      track.querySelectorAll('.car-slide').forEach(s => { s.style.width = sw + 'px'; });
+      const w    = win.offsetWidth;
+      const sw   = (w - GAP * (V - 1)) / V;
+      const sh   = window.innerWidth <= 480 ? sw * 0.75 : sw * (4 / 3);
+      track.querySelectorAll('.car-slide').forEach(s => {
+        s.style.width  = sw + 'px';
+        s.style.height = sh + 'px';
+      });
     }
 
     function setPos(p, animate) {
@@ -155,6 +159,8 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && isLbOpen) 
 
     layout();
     setPos(V, false);
+
+    window.addEventListener('load', () => { layout(); setPos(pos, false); });
 
     carouselStopFns.push(autoStop);
     carouselStartFns.push(autoStart);
