@@ -120,6 +120,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && isLbOpen) 
 
     function layout() {
       const w    = win.offsetWidth;
+      if (w <= 0) return;
       const sw   = (w - GAP * (V - 1)) / V;
       const sh   = window.innerWidth <= 480 ? sw * 0.75 : sw * (4 / 3);
       track.querySelectorAll('.car-slide').forEach(s => {
@@ -160,7 +161,15 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && isLbOpen) 
     layout();
     setPos(V, false);
 
-    window.addEventListener('load', () => { layout(); setPos(pos, false); });
+    // Re-layout khi element có kích thước thực (fix mobile carousel rỗng)
+    const retryLayout = () => {
+      if (win.offsetWidth > 0) { layout(); setPos(pos, false); }
+    };
+    window.addEventListener('load', retryLayout);
+    [0, 100, 300, 600, 1500].forEach(ms => setTimeout(retryLayout, ms));
+    if (typeof ResizeObserver !== 'undefined') {
+      new ResizeObserver(retryLayout).observe(win);
+    }
 
     carouselStopFns.push(autoStop);
     carouselStartFns.push(autoStart);
