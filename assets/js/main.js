@@ -122,10 +122,10 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && isLbOpen) 
       const w    = win.offsetWidth;
       if (w <= 0) return;
       const sw   = (w - GAP * (V - 1)) / V;
-      const sh   = window.innerWidth <= 480 ? sw * 0.75 : sw * (4 / 3);
       track.querySelectorAll('.car-slide').forEach(s => {
         s.style.width  = sw + 'px';
-        s.style.height = sh + 'px';
+        // Mobile: chiều cao tự nhiên theo ảnh gốc
+        s.style.height = window.innerWidth <= 480 ? '' : sw * (4 / 3) + 'px';
       });
     }
 
