@@ -373,6 +373,8 @@ section { padding: 80px 0; }
   display: block;
 }
 
+.about-media-video { cursor: pointer; }
+
 .about-image-placeholder {
   width: 100%;
   aspect-ratio: 3/4;

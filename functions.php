@@ -29,14 +29,14 @@ function hair_enqueue_assets() {
         'hair-main',
         get_template_directory_uri() . '/assets/css/main.css',
         ['google-fonts'],
-        '1.2.1'
+        '1.2.2'
     );
 
     wp_enqueue_script(
         'hair-main',
         get_template_directory_uri() . '/assets/js/main.js',
         [],
-        '1.2.1',
+        '1.2.2',
         true
     );
 }
@@ -136,12 +136,21 @@ function hair_customizer_register( $wp_customize ) {
         'panel' => 'hair_panel',
     ]);
     foreach ([
-        'hero_bg'   => ['Ảnh nền Hero (ảnh tối)', 'https://hairevolution.pl/wp-content/uploads/2026/03/przedluzgym-20-of-215-scaled.jpg'],
-        'about_img' => ['Ảnh section Giới thiệu',  'https://hairevolution.pl/wp-content/uploads/2026/03/przedluzgym-20-of-215-scaled.jpg'],
+        'hero_bg' => ['Ảnh nền Hero (ảnh tối)', 'https://hairevolution.pl/wp-content/uploads/2026/03/przedluzgym-20-of-215-scaled.jpg'],
     ] as $key => $data) {
         $wp_customize->add_setting("hair_{$key}", ['default' => $data[1], 'sanitize_callback' => 'esc_url_raw']);
         $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, "hair_{$key}", ['label' => $data[0], 'section' => 'hair_images']));
     }
+
+    $wp_customize->add_setting('hair_about_img', [
+        'default'           => 'https://hairevolution.pl/wp-content/uploads/2026/03/przedluzgym-20-of-215-scaled.jpg',
+        'sanitize_callback' => 'esc_url_raw',
+    ]);
+    $wp_customize->add_control(new WP_Customize_Upload_Control($wp_customize, 'hair_about_img', [
+        'label'       => 'Ảnh / Video section Giới thiệu',
+        'description' => 'Chọn ảnh hoặc video. Nếu là video: tự động phát, tắt tiếng, bấm vào để tạm dừng/phát tiếp.',
+        'section'     => 'hair_images',
+    ]));
 
     // ── SECTION: Hero ───────────────────────────
     $wp_customize->add_section('hair_hero', [

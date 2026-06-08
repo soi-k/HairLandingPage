@@ -261,3 +261,10 @@ if (statsBar) {
     }
   }, { threshold: 0.5 }).observe(statsBar);
 }
+
+/* ========== ABOUT SECTION VIDEO: click để pause/play ========== */
+document.querySelectorAll('.about-media-video').forEach(vid => {
+  vid.addEventListener('click', () => {
+    if (vid.paused) vid.play(); else vid.pause();
+  });
+});

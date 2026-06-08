@@ -48,13 +48,24 @@
       </div>
 
       <div class="about-image-wrap reveal reveal-d2">
-        <?php $about_img = hair_mod('about_img','https://hairevolution.pl/wp-content/uploads/2026/03/przedluzgym-20-of-215-scaled.jpg'); ?>
+        <?php
+        $about_img = hair_mod('about_img','https://hairevolution.pl/wp-content/uploads/2026/03/przedluzgym-20-of-215-scaled.jpg');
+        $is_video  = (bool) preg_match('/\.(mp4|webm|ogg|mov|m4v)(\?.*)?$/i', $about_img);
+        ?>
+        <?php if ($is_video) : ?>
+        <video
+          class="about-image about-media-video"
+          src="<?php echo esc_url($about_img); ?>"
+          muted autoplay loop playsinline preload="metadata"
+        ></video>
+        <?php else : ?>
         <img
           class="about-image"
           src="<?php echo esc_url($about_img); ?>"
           alt="Włosy naturalne – Hair Evolution Factory"
           onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
         >
+        <?php endif; ?>
         <div class="about-image-placeholder" style="display:none;">
           <span>Zdjęcie fabryki / włosów</span>
         </div>
