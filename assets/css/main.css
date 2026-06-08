@@ -574,6 +574,19 @@ section { padding: 80px 0; }
   }
   .hair-box-header,
   .hair-box-desc { padding: 0 20px; }
+
+  /* Mô tả: thu gọn 3 dòng, click để mở rộng/thu gọn */
+  .hair-box-desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .hair-box-desc.expanded {
+    -webkit-line-clamp: unset;
+    overflow: visible;
+  }
   .hair-carousel { position: relative; gap: 0; margin-top: 12px; }
   .car-window { border-radius: 0; }
 

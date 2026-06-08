@@ -200,6 +200,11 @@ document.addEventListener('click', function (e) {
   }
 });
 
+/* ========== HAIR BOX DESC: thu gọn / mở rộng (mobile) ========== */
+document.querySelectorAll('.hair-box-desc').forEach(desc => {
+  desc.addEventListener('click', () => desc.classList.toggle('expanded'));
+});
+
 
 /* ========== CONTACT FORM ========== */
 const form = document.getElementById('contactForm');
