@@ -575,16 +575,34 @@ section { padding: 80px 0; }
   .hair-box-header,
   .hair-box-desc { padding: 0 20px; }
 
-  /* Mô tả: thu gọn 3 dòng, click để mở rộng/thu gọn */
-  .hair-box-desc {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
+  /* Mô tả: thu gọn 3 dòng với "... Czytaj więcej", click để mở rộng */
+  .hair-box-desc,
+  .mobile-collapsible {
+    display: block;
     overflow: hidden;
+    position: relative;
     cursor: pointer;
   }
-  .hair-box-desc.expanded {
-    -webkit-line-clamp: unset;
+  .hair-box-desc    { max-height: 72px;  } /* 3 × 14px × 1.7  */
+  .mobile-collapsible { max-height: 100px; } /* p margin-top + 3 × 15px × 1.85 */
+
+  .hair-box-desc:not(.expanded)::after,
+  .mobile-collapsible:not(.expanded)::after {
+    content: '... Czytaj więcej';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding-left: 56px;
+    background: linear-gradient(to right, transparent, var(--cream) 48%);
+    color: var(--gold);
+    font-style: italic;
+    font-size: 0.875em;
+    font-weight: 600;
+  }
+
+  .hair-box-desc.expanded,
+  .mobile-collapsible.expanded {
+    max-height: none;
     overflow: visible;
   }
   .hair-carousel { position: relative; gap: 0; margin-top: 12px; }

@@ -200,8 +200,8 @@ document.addEventListener('click', function (e) {
   }
 });
 
-/* ========== HAIR BOX DESC: thu gọn / mở rộng (mobile) ========== */
-document.querySelectorAll('.hair-box-desc').forEach(desc => {
+/* ========== COLLAPSIBLE TEXT: thu gọn / mở rộng (mobile) ========== */
+document.querySelectorAll('.hair-box-desc, .mobile-collapsible').forEach(desc => {
   desc.addEventListener('click', () => desc.classList.toggle('expanded'));
 });
 

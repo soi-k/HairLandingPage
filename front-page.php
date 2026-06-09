@@ -29,8 +29,10 @@
           <?php echo esc_html(hair_mod('about_title','Nowoczesna fabryka')); ?><br>
           <span class="italic-gold"><?php echo esc_html(hair_mod('about_gold','farbowania włosów')); ?></span>
         </h2>
-        <p><?php echo esc_html(hair_mod('about_p1','Hair Evolution Factory to nowoczesna fabryka przemysłowego farbowania włosów naturalnych zlokalizowana we Wrocławiu.')); ?></p>
-        <p><?php echo esc_html(hair_mod('about_p2','Dzięki skali produkcji przemysłowej jesteśmy w stanie oferować stabilną jakość, powtarzalność koloru oraz konkurencyjne ceny.')); ?></p>
+        <div class="mobile-collapsible">
+          <p><?php echo esc_html(hair_mod('about_p1','Hair Evolution Factory to nowoczesna fabryka przemysłowego farbowania włosów naturalnych zlokalizowana we Wrocławiu.')); ?></p>
+          <p><?php echo esc_html(hair_mod('about_p2','Dzięki skali produkcji przemysłowej jesteśmy w stanie oferować stabilną jakość, powtarzalność koloru oraz konkurencyjne ceny.')); ?></p>
+        </div>
         <div class="about-stats">
           <div class="about-stat">
             <strong><?php echo esc_html(hair_mod('about_stat1_title','Własna fabryka')); ?></strong>
@@ -143,10 +145,12 @@
           <?php echo esc_html(hair_mod('promo_title', 'Włosy')); ?><br>
           <span class="italic-gold"><?php echo esc_html(hair_mod('promo_gold', 'z Wietnamu')); ?></span>
         </h2>
-        <p><?php echo esc_html(hair_mod('promo_p1', '')); ?></p>
-        <?php $p2 = hair_mod('promo_p2', ''); if ($p2) : ?>
-        <p><?php echo esc_html($p2); ?></p>
-        <?php endif; ?>
+        <div class="mobile-collapsible">
+          <p><?php echo esc_html(hair_mod('promo_p1', '')); ?></p>
+          <?php $p2 = hair_mod('promo_p2', ''); if ($p2) : ?>
+          <p><?php echo esc_html($p2); ?></p>
+          <?php endif; ?>
+        </div>
         <?php if (hair_mod('promo_stat1_title', '') || hair_mod('promo_stat2_title', '') || hair_mod('promo_stat3_title', '')) : ?>
         <div class="about-stats">
           <?php foreach ([1, 2, 3] as $i) :
