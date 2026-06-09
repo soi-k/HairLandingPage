@@ -216,16 +216,40 @@ if (form) {
     btn.textContent = 'Wysyłanie...';
     btn.disabled = true;
 
-    setTimeout(() => {
-      btn.textContent = '✓ Wiadomość wysłana!';
-      btn.style.background = '#22c55e';
-      form.reset();
+    const payload = {
+      name:    (form.querySelector('[name="name"]')?.value    || '').trim(),
+      email:   (form.querySelector('[name="email"]')?.value   || '').trim(),
+      phone:   (form.querySelector('[name="phone"]')?.value   || '').trim(),
+      message: (form.querySelector('[name="message"]')?.value || '').trim(),
+    };
+
+    const finish = (ok) => {
+      btn.textContent      = ok ? '✓ Wiadomość wysłana!' : '✗ Błąd. Spróbuj ponownie.';
+      btn.style.background = ok ? '#22c55e' : '#ef4444';
+      if (ok) form.reset();
       setTimeout(() => {
-        btn.textContent = orig;
+        btn.textContent      = orig;
         btn.style.background = '';
-        btn.disabled = false;
+        btn.disabled         = false;
       }, 4000);
-    }, 1400);
+    };
+
+    const webhook = (typeof hairConfig !== 'undefined' && hairConfig.sheetWebhook)
+      ? hairConfig.sheetWebhook : '';
+
+    if (!webhook) {
+      setTimeout(() => finish(true), 1400);
+      return;
+    }
+
+    fetch(webhook, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload),
+      mode:    'no-cors',
+    })
+    .then(() => finish(true))
+    .catch(() => finish(false));
   });
 }
 

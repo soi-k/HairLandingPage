@@ -29,16 +29,19 @@ function hair_enqueue_assets() {
         'hair-main',
         get_template_directory_uri() . '/assets/css/main.css',
         ['google-fonts'],
-        '1.2.2'
+        '1.2.3'
     );
 
     wp_enqueue_script(
         'hair-main',
         get_template_directory_uri() . '/assets/js/main.js',
         [],
-        '1.2.2',
+        '1.2.3',
         true
     );
+    wp_localize_script('hair-main', 'hairConfig', [
+        'sheetWebhook' => get_theme_mod('hair_sheet_webhook', ''),
+    ]);
 }
 add_action('wp_enqueue_scripts', 'hair_enqueue_assets');
 
@@ -357,6 +360,17 @@ function hair_customizer_register( $wp_customize ) {
         $wp_customize->add_setting("hair_{$key}", ['default' => '', 'sanitize_callback' => 'esc_url_raw']);
         $wp_customize->add_control("hair_{$key}", ['label' => $label, 'section' => 'hair_contact', 'type' => 'url']);
     }
+
+    $wp_customize->add_setting('hair_sheet_webhook', [
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ]);
+    $wp_customize->add_control('hair_sheet_webhook', [
+        'label'       => 'Google Sheets Webhook URL',
+        'description' => 'URL từ Google Apps Script (Deploy → Web app). Để trống = form vẫn hoạt động nhưng không ghi vào Sheet.',
+        'section'     => 'hair_contact',
+        'type'        => 'url',
+    ]);
 
     // ── SECTION: Footer ────────────────────────
     $wp_customize->add_section('hair_footer', [
