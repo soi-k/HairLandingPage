@@ -389,6 +389,32 @@ section { padding: 80px 0; }
   font-style: italic;
 }
 
+/* Promo section: text truncated to 10 lines on all screen sizes */
+@media (min-width: 481px) {
+  .promo-section .mobile-collapsible {
+    max-height: 295px; /* 16px p-margin + 10 × 15px × 1.85 */
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+  }
+  .promo-section .mobile-collapsible:not(.expanded)::after {
+    content: '... Czytaj więcej';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding-left: 56px;
+    background: linear-gradient(to right, transparent, var(--cream) 48%);
+    color: var(--gold);
+    font-style: italic;
+    font-size: 0.875em;
+    font-weight: 600;
+  }
+  .promo-section .mobile-collapsible.expanded {
+    max-height: none;
+    overflow: visible;
+  }
+}
+
 /* =============================================
    HAIR TYPES (#hair-types)
    ============================================= */

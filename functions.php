@@ -29,14 +29,14 @@ function hair_enqueue_assets() {
         'hair-main',
         get_template_directory_uri() . '/assets/css/main.css',
         ['google-fonts'],
-        '1.2.5'
+        '1.2.6'
     );
 
     wp_enqueue_script(
         'hair-main',
         get_template_directory_uri() . '/assets/js/main.js',
         [],
-        '1.2.5',
+        '1.2.6',
         true
     );
     wp_localize_script('hair-main', 'hairConfig', [
