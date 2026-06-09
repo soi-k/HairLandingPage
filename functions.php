@@ -29,14 +29,14 @@ function hair_enqueue_assets() {
         'hair-main',
         get_template_directory_uri() . '/assets/css/main.css',
         ['google-fonts'],
-        '1.2.3'
+        '1.2.4'
     );
 
     wp_enqueue_script(
         'hair-main',
         get_template_directory_uri() . '/assets/js/main.js',
         [],
-        '1.2.3',
+        '1.2.4',
         true
     );
     wp_localize_script('hair-main', 'hairConfig', [
@@ -196,6 +196,46 @@ function hair_customizer_register( $wp_customize ) {
         $wp_customize->add_setting("hair_{$key}", ['default' => $data[2], 'sanitize_callback' => $data[0] === 'textarea' ? 'sanitize_textarea_field' : 'sanitize_text_field']);
         $wp_customize->add_control("hair_{$key}", ['label' => $data[1], 'section' => 'hair_about', 'type' => $data[0]]);
     }
+
+    // ── SECTION: Section Promo ─────────────────
+    $wp_customize->add_section('hair_promo', [
+        'title' => '🎯 Section Promo (dưới Loại tóc)',
+        'panel' => 'hair_panel',
+    ]);
+
+    $wp_customize->add_setting('hair_promo_enabled', ['default' => '', 'sanitize_callback' => 'sanitize_text_field']);
+    $wp_customize->add_control('hair_promo_enabled', [
+        'label'   => 'Hiển thị section này',
+        'section' => 'hair_promo',
+        'type'    => 'checkbox',
+    ]);
+
+    $wp_customize->add_setting('hair_promo_nav', ['default' => 'Nasz Produkt', 'sanitize_callback' => 'sanitize_text_field']);
+    $wp_customize->add_control('hair_promo_nav', ['label' => 'Tên menu item', 'section' => 'hair_promo', 'type' => 'text']);
+
+    foreach ([
+        'promo_tag'         => ['text',     'Tag nhỏ phía trên',              'Nasza Oferta'],
+        'promo_title'       => ['text',     'Tiêu đề dòng 1',                 'Włosy'],
+        'promo_gold'        => ['text',     'Tiêu đề dòng 2 (vàng nghiêng)', 'z Wietnamu'],
+        'promo_p1'          => ['textarea', 'Đoạn văn 1',                     'Opisz swój produkt lub ofertę tutaj.'],
+        'promo_p2'          => ['textarea', 'Đoạn văn 2 (để trống để ẩn)',    ''],
+        'promo_stat1_title' => ['text',     'Thống kê 1 - tiêu đề',           ''],
+        'promo_stat1_sub'   => ['text',     'Thống kê 1 - phụ đề',            ''],
+        'promo_stat2_title' => ['text',     'Thống kê 2 - tiêu đề',           ''],
+        'promo_stat2_sub'   => ['text',     'Thống kê 2 - phụ đề',            ''],
+        'promo_stat3_title' => ['text',     'Thống kê 3 - tiêu đề',           ''],
+        'promo_stat3_sub'   => ['text',     'Thống kê 3 - phụ đề',            ''],
+    ] as $key => $data) {
+        $wp_customize->add_setting("hair_{$key}", ['default' => $data[2], 'sanitize_callback' => $data[0] === 'textarea' ? 'sanitize_textarea_field' : 'sanitize_text_field']);
+        $wp_customize->add_control("hair_{$key}", ['label' => $data[1], 'section' => 'hair_promo', 'type' => $data[0]]);
+    }
+
+    $wp_customize->add_setting('hair_promo_media', ['default' => '', 'sanitize_callback' => 'esc_url_raw']);
+    $wp_customize->add_control(new WP_Customize_Upload_Control($wp_customize, 'hair_promo_media', [
+        'label'       => 'Ảnh / Video',
+        'description' => 'Chọn ảnh hoặc video. Video: tự động phát, tắt tiếng, bấm để pause/play.',
+        'section'     => 'hair_promo',
+    ]));
 
     // ── SECTION: Loại tóc ──────────────────────
     $wp_customize->add_section('hair_types', [

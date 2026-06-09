@@ -21,6 +21,9 @@
       <ul class="nav-menu" id="navMenu">
         <li><a href="<?php echo esc_url(home_url('/#about')); ?>">O Fabryce</a></li>
         <li><a href="<?php echo esc_url(home_url('/#hair-types')); ?>">Rodzaje Włosów</a></li>
+        <?php if (hair_mod('promo_enabled', '')) : ?>
+        <li><a href="<?php echo esc_url(home_url('/#promo')); ?>"><?php echo esc_html(hair_mod('promo_nav', 'Nasz Produkt')); ?></a></li>
+        <?php endif; ?>
         <li><a href="<?php echo esc_url(home_url('/#why')); ?>">Dlaczego My</a></li>
         <li><a href="<?php echo esc_url(home_url('/#contact')); ?>">Kontakt</a></li>
         <?php

@@ -9,6 +9,9 @@
           <h4>O Fabryce</h4>
           <ul class="footer-links">
             <li><a href="#about">O Fabryce</a></li>
+            <?php if (hair_mod('promo_enabled', '')) : ?>
+            <li><a href="#promo"><?php echo esc_html(hair_mod('promo_nav', 'Nasz Produkt')); ?></a></li>
+            <?php endif; ?>
             <li><a href="#why">Dlaczego My</a></li>
             <li><a href="#contact">Kontakt</a></li>
           </ul>

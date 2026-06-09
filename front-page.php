@@ -132,6 +132,58 @@
   </div>
 </section>
 
+<?php if (hair_mod('promo_enabled', '')) : ?>
+<!-- PROMO SECTION -->
+<section class="about promo-section" id="promo">
+  <div class="container">
+    <div class="grid-2">
+      <div class="about-text reveal">
+        <span class="section-tag"><?php echo esc_html(hair_mod('promo_tag', 'Nasza Oferta')); ?></span>
+        <h2 class="section-title">
+          <?php echo esc_html(hair_mod('promo_title', 'Włosy')); ?><br>
+          <span class="italic-gold"><?php echo esc_html(hair_mod('promo_gold', 'z Wietnamu')); ?></span>
+        </h2>
+        <p><?php echo esc_html(hair_mod('promo_p1', '')); ?></p>
+        <?php $p2 = hair_mod('promo_p2', ''); if ($p2) : ?>
+        <p><?php echo esc_html($p2); ?></p>
+        <?php endif; ?>
+        <?php if (hair_mod('promo_stat1_title', '') || hair_mod('promo_stat2_title', '') || hair_mod('promo_stat3_title', '')) : ?>
+        <div class="about-stats">
+          <?php foreach ([1, 2, 3] as $i) :
+            $t = hair_mod("promo_stat{$i}_title", '');
+            $s = hair_mod("promo_stat{$i}_sub", '');
+            if (!$t && !$s) continue; ?>
+          <div class="about-stat">
+            <strong><?php echo esc_html($t); ?></strong>
+            <span><?php echo esc_html($s); ?></span>
+          </div>
+          <?php endforeach; ?>
+        </div>
+        <?php endif; ?>
+      </div>
+
+      <div class="about-image-wrap reveal reveal-d2">
+        <?php
+        $promo_media = hair_mod('promo_media', '');
+        $is_promo_video = $promo_media && (bool) preg_match('/\.(mp4|webm|ogg|mov|m4v)(\?.*)?$/i', $promo_media);
+        ?>
+        <?php if ($is_promo_video) : ?>
+        <video
+          class="about-image about-media-video"
+          src="<?php echo esc_url($promo_media); ?>"
+          muted autoplay loop playsinline preload="metadata"
+        ></video>
+        <?php elseif ($promo_media) : ?>
+        <img class="about-image" src="<?php echo esc_url($promo_media); ?>" alt="">
+        <?php else : ?>
+        <div class="about-image-placeholder"><span>Chọn ảnh / video trong Customizer</span></div>
+        <?php endif; ?>
+      </div>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
+
 <!-- CO WPŁYWA NA WYCENĘ -->
 <section class="factors">
   <div class="container">
