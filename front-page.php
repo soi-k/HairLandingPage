@@ -52,9 +52,20 @@
       <div class="about-image-wrap reveal reveal-d2">
         <?php
         $about_img = hair_mod('about_img','https://hairevolution.pl/wp-content/uploads/2026/03/przedluzgym-20-of-215-scaled.jpg');
+        $about_yt  = hair_youtube_id(hair_mod('about_youtube',''));
         $is_video  = (bool) preg_match('/\.(mp4|webm|ogg|mov|m4v)(\?.*)?$/i', $about_img);
         ?>
-        <?php if ($is_video) : ?>
+        <?php if ($about_yt) : ?>
+        <div class="about-video-embed">
+          <iframe
+            src="https://www.youtube.com/embed/<?php echo esc_attr($about_yt); ?>"
+            title="YouTube video"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <?php elseif ($is_video) : ?>
         <video
           class="about-image about-media-video"
           src="<?php echo esc_url($about_img); ?>"
@@ -168,10 +179,21 @@
 
       <div class="about-image-wrap reveal reveal-d2">
         <?php
-        $promo_media = hair_mod('promo_media', '');
+        $promo_media    = hair_mod('promo_media', '');
+        $promo_yt       = hair_youtube_id(hair_mod('promo_youtube',''));
         $is_promo_video = $promo_media && (bool) preg_match('/\.(mp4|webm|ogg|mov|m4v)(\?.*)?$/i', $promo_media);
         ?>
-        <?php if ($is_promo_video) : ?>
+        <?php if ($promo_yt) : ?>
+        <div class="about-video-embed">
+          <iframe
+            src="https://www.youtube.com/embed/<?php echo esc_attr($promo_yt); ?>"
+            title="YouTube video"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <?php elseif ($is_promo_video) : ?>
         <video
           class="about-image about-media-video"
           src="<?php echo esc_url($promo_media); ?>"

@@ -29,14 +29,14 @@ function hair_enqueue_assets() {
         'hair-main',
         get_template_directory_uri() . '/assets/css/main.css',
         ['google-fonts'],
-        '1.2.6'
+        '1.2.7'
     );
 
     wp_enqueue_script(
         'hair-main',
         get_template_directory_uri() . '/assets/js/main.js',
         [],
-        '1.2.6',
+        '1.2.7',
         true
     );
     wp_localize_script('hair-main', 'hairConfig', [
@@ -155,6 +155,17 @@ function hair_customizer_register( $wp_customize ) {
         'section'     => 'hair_images',
     ]));
 
+    $wp_customize->add_setting('hair_about_youtube', [
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ]);
+    $wp_customize->add_control('hair_about_youtube', [
+        'label'       => 'Link YouTube section Giới thiệu (ưu tiên nếu điền)',
+        'description' => 'Dán link YouTube (vd: https://youtu.be/xxxx hoặc https://www.youtube.com/watch?v=xxxx). Nếu điền, sẽ hiển thị video YouTube thay cho ảnh/video ở trên.',
+        'section'     => 'hair_images',
+        'type'        => 'url',
+    ]);
+
     // ── SECTION: Hero ───────────────────────────
     $wp_customize->add_section('hair_hero', [
         'title' => '🦸 Hero - Banner đầu trang',
@@ -236,6 +247,17 @@ function hair_customizer_register( $wp_customize ) {
         'description' => 'Chọn ảnh hoặc video. Video: tự động phát, tắt tiếng, bấm để pause/play.',
         'section'     => 'hair_promo',
     ]));
+
+    $wp_customize->add_setting('hair_promo_youtube', [
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ]);
+    $wp_customize->add_control('hair_promo_youtube', [
+        'label'       => 'Link YouTube (ưu tiên nếu điền)',
+        'description' => 'Dán link YouTube (vd: https://youtu.be/xxxx hoặc https://www.youtube.com/watch?v=xxxx). Nếu điền, sẽ hiển thị video YouTube thay cho ảnh/video ở trên.',
+        'section'     => 'hair_promo',
+        'type'        => 'url',
+    ]);
 
     // ── SECTION: Loại tóc ──────────────────────
     $wp_customize->add_section('hair_types', [
@@ -432,6 +454,15 @@ add_action('customize_register', 'hair_customizer_register');
 // Helper: get Customizer setting with fallback default
 function hair_mod( $key, $default = '' ) {
     return get_theme_mod( "hair_{$key}", $default );
+}
+
+// Extract YouTube video ID from a URL (supports youtu.be, watch?v=, embed/, shorts/)
+function hair_youtube_id( $url ) {
+    if ( ! $url ) return '';
+    if ( preg_match( '/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/', $url, $m ) ) {
+        return $m[1];
+    }
+    return '';
 }
 
 // Render carousel slides from a gallery Customizer setting (outputs HTML)
