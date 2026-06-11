@@ -10,6 +10,8 @@ function hair_theme_setup() {
         'flex-width'  => true,
     ]);
     add_theme_support('customize-selective-refresh-widgets');
+    add_theme_support('editor-styles');
+    add_editor_style('assets/css/editor-style.css');
 
     register_nav_menus([
         'primary' => __('Menu główne', 'hair-landing'),
@@ -29,14 +31,14 @@ function hair_enqueue_assets() {
         'hair-main',
         get_template_directory_uri() . '/assets/css/main.css',
         ['google-fonts'],
-        '1.2.7'
+        '1.2.8'
     );
 
     wp_enqueue_script(
         'hair-main',
         get_template_directory_uri() . '/assets/js/main.js',
         [],
-        '1.2.7',
+        '1.2.8',
         true
     );
     wp_localize_script('hair-main', 'hairConfig', [

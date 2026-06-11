@@ -1,0 +1,6 @@
+/* Tăng khoảng cách giữa các từ trong khung soạn thảo (Classic Editor + Gutenberg) */
+body,
+.editor-styles-wrapper,
+.mce-content-body {
+  word-spacing: 0.2em;
+}
