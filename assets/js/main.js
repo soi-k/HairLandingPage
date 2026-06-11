@@ -224,7 +224,7 @@ if (form) {
     };
 
     const finish = (ok) => {
-      btn.textContent      = ok ? '✓ Wiadomość wysłana!' : '✗ Błąd. Spróbuj ponownie.';
+      btn.textContent      = ok ? '✓ Dziękujemy za wiadomość!' : '✗ Błąd. Spróbuj ponownie.';
       btn.style.background = ok ? '#22c55e' : '#ef4444';
       if (ok) form.reset();
       setTimeout(() => {
