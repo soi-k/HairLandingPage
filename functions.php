@@ -453,6 +453,53 @@ function hair_customizer_register( $wp_customize ) {
 }
 add_action('customize_register', 'hair_customizer_register');
 
+// ── SECTION: Mã theo dõi (Tracking codes) ───────
+function hair_tracking_register( $wp_customize ) {
+    $wp_customize->add_section('hair_tracking', [
+        'title' => '📡 Mã theo dõi (Tracking)',
+        'panel' => 'hair_panel',
+    ]);
+
+    $wp_customize->add_setting('hair_tracking_head', [
+        'default'           => '',
+        'sanitize_callback' => 'hair_sanitize_code',
+    ]);
+    $wp_customize->add_control('hair_tracking_head', [
+        'label'       => 'Mã chèn vào <head>',
+        'description' => 'Dán mã theo dõi (Google Analytics, Google Tag Manager, Meta Pixel...) cần đặt trong thẻ <head>.',
+        'section'     => 'hair_tracking',
+        'type'        => 'textarea',
+    ]);
+
+    $wp_customize->add_setting('hair_tracking_body', [
+        'default'           => '',
+        'sanitize_callback' => 'hair_sanitize_code',
+    ]);
+    $wp_customize->add_control('hair_tracking_body', [
+        'label'       => 'Mã chèn ngay sau mở thẻ <body>',
+        'description' => 'Dán mã yêu cầu đặt ngay sau thẻ <body> (vd: Google Tag Manager noscript).',
+        'section'     => 'hair_tracking',
+        'type'        => 'textarea',
+    ]);
+}
+add_action('customize_register', 'hair_tracking_register');
+
+// Cho phép admin nhập nguyên mã script/iframe (chỉ user có quyền customize mới sửa được)
+function hair_sanitize_code( $value ) {
+    return $value;
+}
+
+// Output mã tracking vào <head> và ngay sau <body>
+add_action('wp_head', function () {
+    $code = hair_mod('tracking_head', '');
+    if ( $code ) echo $code . "\n";
+}, 99);
+
+add_action('wp_body_open', function () {
+    $code = hair_mod('tracking_body', '');
+    if ( $code ) echo $code . "\n";
+});
+
 // Helper: get Customizer setting with fallback default
 function hair_mod( $key, $default = '' ) {
     return get_theme_mod( "hair_{$key}", $default );
