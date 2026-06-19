@@ -31,14 +31,14 @@ function hair_enqueue_assets() {
         'hair-main',
         get_template_directory_uri() . '/assets/css/main.css',
         ['google-fonts'],
-        '1.2.9'
+        '1.3.0'
     );
 
     wp_enqueue_script(
         'hair-main',
         get_template_directory_uri() . '/assets/js/main.js',
         [],
-        '1.2.9',
+        '1.3.0',
         true
     );
     wp_localize_script('hair-main', 'hairConfig', [
@@ -127,6 +127,13 @@ function hair_customizer_register( $wp_customize ) {
         'title' => '🏷️ Logo & Thương hiệu',
         'panel' => 'hair_panel',
     ]);
+    $wp_customize->add_setting('hair_logo_image', ['default' => '', 'sanitize_callback' => 'esc_url_raw']);
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'hair_logo_image', [
+        'label'       => 'Ảnh logo (ưu tiên nếu chọn)',
+        'description' => 'Nên dùng ảnh đã xoá nền (PNG/SVG trong suốt). Nếu chọn ảnh, sẽ hiển thị ảnh thay cho tên chữ ở dưới.',
+        'section'     => 'hair_general',
+    ]));
+
     foreach ([
         'logo_name'   => ['Tên logo - dòng 1',              'Hair Evolution'],
         'logo_italic' => ['Tên logo - dòng 2 (in nghiêng)', 'Factory'],

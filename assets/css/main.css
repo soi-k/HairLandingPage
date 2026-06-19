@@ -165,7 +165,8 @@ section { padding: 80px 0; }
   gap: 24px;
 }
 
-.nav-logo img {
+.nav-logo img,
+.nav-logo-img {
   height: 44px;
   width: auto;
 }

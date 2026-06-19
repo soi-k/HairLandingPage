@@ -14,7 +14,12 @@
   <div class="container">
     <div class="nav-inner">
       <a href="<?php echo esc_url(home_url('/')); ?>" class="nav-logo">
+        <?php $logo_image = hair_mod('logo_image', ''); ?>
+        <?php if ($logo_image) : ?>
+        <img class="nav-logo-img" src="<?php echo esc_url($logo_image); ?>" alt="<?php echo esc_attr(hair_mod('logo_name','Hair Evolution') . ' ' . hair_mod('logo_italic','Factory')); ?>">
+        <?php else : ?>
         <span class="nav-logo-text"><?php echo esc_html(hair_mod('logo_name','Hair Evolution')); ?> <em><?php echo esc_html(hair_mod('logo_italic','Factory')); ?></em></span>
+        <?php endif; ?>
       </a>
 
       <ul class="nav-menu" id="navMenu">
