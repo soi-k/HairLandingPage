@@ -2,7 +2,12 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <div class="footer-brand-name"><?php echo esc_html(hair_mod('footer_brand','Hair Evolution')); ?> <em><?php echo esc_html(hair_mod('footer_brand_italic','Factory')); ?></em></div>
+          <?php $footer_logo_image = hair_mod('logo_image', ''); ?>
+          <?php if ($footer_logo_image) : ?>
+          <img class="footer-brand-logo" src="<?php echo esc_url($footer_logo_image); ?>" alt="<?php echo esc_attr(hair_mod('logo_name','Hair Evolution') . ' ' . hair_mod('logo_italic','Factory')); ?>">
+          <?php else : ?>
+          <div class="footer-brand-name"><?php echo esc_html(hair_mod('logo_name','Hair Evolution')); ?> <em><?php echo esc_html(hair_mod('logo_italic','Factory')); ?></em></div>
+          <?php endif; ?>
           <p><?php echo esc_html(hair_mod('footer_desc','Nowoczesna fabryka przemysłowego farbowania włosów naturalnych. Wrocław, Polska. Wyłącznie model B2B.')); ?></p>
         </div>
       </div>

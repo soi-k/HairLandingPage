@@ -31,14 +31,14 @@ function hair_enqueue_assets() {
         'hair-main',
         get_template_directory_uri() . '/assets/css/main.css',
         ['google-fonts'],
-        '1.3.0'
+        '1.3.1'
     );
 
     wp_enqueue_script(
         'hair-main',
         get_template_directory_uri() . '/assets/js/main.js',
         [],
-        '1.3.0',
+        '1.3.1',
         true
     );
     wp_localize_script('hair-main', 'hairConfig', [
@@ -449,9 +449,7 @@ function hair_customizer_register( $wp_customize ) {
         'panel' => 'hair_panel',
     ]);
     foreach ([
-        'footer_brand'        => ['text',     'Tên thương hiệu dòng 1',            'Hair Evolution'],
-        'footer_brand_italic' => ['text',     'Tên thương hiệu dòng 2 (in nghiêng)', 'Factory'],
-        'footer_desc'         => ['textarea', 'Mô tả footer',                       'Nowoczesna fabryka przemysłowego farbowania włosów naturalnych. Wrocław, Polska. Wyłącznie model B2B.'],
+        'footer_desc' => ['textarea', 'Mô tả footer', 'Nowoczesna fabryka przemysłowego farbowania włosów naturalnych. Wrocław, Polska. Wyłącznie model B2B.'],
     ] as $key => $data) {
         $wp_customize->add_setting("hair_{$key}", ['default' => $data[2], 'sanitize_callback' => $data[0] === 'textarea' ? 'sanitize_textarea_field' : 'sanitize_text_field']);
         $wp_customize->add_control("hair_{$key}", ['label' => $data[1], 'section' => 'hair_footer', 'type' => $data[0]]);

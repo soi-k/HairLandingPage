@@ -1085,7 +1085,6 @@ section { padding: 80px 0; }
 .footer-brand img {
   height: 40px;
   width: auto;
-  filter: brightness(2);
 }
 
 .footer-brand-name {
