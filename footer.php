@@ -10,6 +10,42 @@
           <?php endif; ?>
           <p><?php echo esc_html(hair_mod('footer_desc','Nowoczesna fabryka przemysłowego farbowania włosów naturalnych. Wrocław, Polska. Wyłącznie model B2B.')); ?></p>
         </div>
+        <div class="footer-col">
+          <h4>O Fabryce</h4>
+          <ul class="footer-links">
+            <li><a href="#about">O Fabryce</a></li>
+            <?php if (hair_mod('promo_enabled', '')) : ?>
+            <li><a href="#promo"><?php echo esc_html(hair_mod('promo_nav', 'Nasz Produkt')); ?></a></li>
+            <?php endif; ?>
+            <li><a href="#why">Dlaczego My</a></li>
+            <li><a href="#contact">Kontakt</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Rodzaje Włosów</h4>
+          <ul class="footer-links">
+            <?php for ($n = 1; $n <= 4; $n++) :
+              $box_title = hair_mod("box{$n}_title", '');
+              if (!$box_title) continue;
+            ?>
+            <li><a href="#hair-types"><?php echo esc_html($box_title); ?></a></li>
+            <?php endfor; ?>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Kontakt</h4>
+          <div class="footer-contact-item">
+            <span>📍</span> <?php echo esc_html(hair_mod('contact_city','Wrocław, Polska')); ?>
+          </div>
+          <div class="footer-contact-item">
+            <span>✉️</span>
+            <a href="mailto:<?php echo esc_attr(hair_mod('contact_email','kontakt@hairevolutionfactory.pl')); ?>"><?php echo esc_html(hair_mod('contact_email','kontakt@hairevolutionfactory.pl')); ?></a>
+          </div>
+          <div class="footer-contact-item">
+            <span>📞</span>
+            <a href="tel:<?php echo esc_attr(preg_replace('/\s+/','',(string)hair_mod('contact_phone','+48 573 568 410'))); ?>"><?php echo esc_html(hair_mod('contact_phone','+48 573 568 410')); ?></a>
+          </div>
+        </div>
       </div>
       <div class="footer-bottom">
         <p>© <?php echo date('Y'); ?> Hair Evolution Factory. Wszelkie prawa zastrzeżone.</p>

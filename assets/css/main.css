@@ -1069,7 +1069,7 @@ section { padding: 80px 0; }
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
   gap: 40px;
   padding-bottom: 48px;
 }
@@ -1079,7 +1079,7 @@ section { padding: 80px 0; }
   color: rgba(255,255,255,0.35);
   line-height: 1.8;
   margin: 14px 0 0;
-  max-width: 480px;
+  max-width: 240px;
 }
 
 .footer-brand img {
@@ -1192,10 +1192,13 @@ section { padding: 80px 0; }
   .pricing-grid { grid-template-columns: repeat(2, 1fr); }
   .factors-grid { flex-wrap: wrap; }
   .factor-item { flex: 1 1 calc(33.333% - 1px); }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
 }
 
 @media (max-width: 768px) {
   section { padding: 56px 0; }
+
+  .footer-grid { grid-template-columns: 1fr; }
 
   .nav-menu {
     position: fixed;
